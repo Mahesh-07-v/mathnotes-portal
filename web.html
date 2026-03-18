@@ -1,0 +1,1074 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Prof. Portal — Mathematics</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0e0c;--surface:#1a1814;--card:#221f1a;--border:#2e2a24;
+  --amber:#e8a040;--amber2:#f5c070;--cream:#f5edd8;--muted:#8a7d68;
+  --text:#e8dfd0;--green:#5a9e72;--red:#c0504a;--blue:#5a8fc0;
+}
+[data-theme="light"]{
+  --bg:#faf9f7;--surface:#ffffff;--card:#f5f4f1;--border:#e6e4df;
+  --amber:#d98218;--amber2:#f5a542;--cream:#1a1814;--muted:#6b645a;
+  --text:#2e2a24;--green:#4a825e;--red:#ad423d;--blue:#4a76a1;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(15,14,12,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem}
+[data-theme="light"] nav{background:rgba(250,249,247,0.92)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--amber);font-style:italic}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:var(--amber)}
+.nav-right{display:flex;align-items:center;gap:1rem}
+#admin-badge{background:var(--amber);color:#000;font-size:.7rem;font-weight:600;padding:.25rem .7rem;border-radius:2rem;display:none}
+#login-btn{background:transparent;border:1.5px solid var(--amber);color:var(--amber);padding:.4rem 1.1rem;border-radius:2rem;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif}
+#login-btn:hover{background:var(--amber);color:#000}
+.page{display:none;min-height:100vh;padding:6rem 0 4rem}
+.page.active{display:block}
+.container{max-width:1100px;margin:0 auto;padding:0 2.5rem}
+#page-home{background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,160,64,.08) 0%,transparent 60%)}
+.hero-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:calc(100vh - 6rem);padding:2rem 0}
+.hero-tag{display:inline-block;border:1px solid var(--amber);color:var(--amber);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .9rem;border-radius:2rem;margin-bottom:1.5rem}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.1;margin-bottom:.5rem}
+.hero-name em{color:var(--amber);font-style:italic}
+.hero-dept{color:var(--muted);margin-bottom:1.5rem;font-size:1rem}
+.hero-bio-text{color:var(--text);line-height:1.8;font-size:1rem;margin-bottom:2rem;opacity:.85}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.prof-card{background:var(--card);border:1px solid var(--border);border-radius:1.5rem;padding:2rem;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.prof-photo-wrap{position:relative;width:120px;height:120px;margin-bottom:1.5rem}
+.prof-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--amber);display:block}
+.prof-photo-placeholder{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--amber2));display:flex;align-items:center;justify-content:center;font-size:3rem;border:3px solid var(--amber)}
+.photo-edit-btn{position:absolute;bottom:4px;right:4px;background:var(--amber);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.8rem;display:none;align-items:center;justify-content:center}
+.admin-mode .photo-edit-btn{display:flex}
+.card-name{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);margin-bottom:.25rem}
+.card-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;border-top:1px solid var(--border);padding-top:1.25rem}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--amber)}
+.stat-l{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+.s-tag{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:.6rem}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--cream);margin-bottom:.75rem;line-height:1.2}
+.s-sub{color:var(--muted);font-size:.95rem;max-width:540px;line-height:1.7;margin-bottom:2.5rem}
+.btn{padding:.7rem 1.6rem;border-radius:2rem;font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;border:none;font-family:'Outfit',sans-serif;display:inline-flex;align-items:center;gap:.5rem}
+.btn-amber{background:var(--amber);color:#000}
+.btn-amber:hover{background:var(--amber2)}
+.btn-outline{background:transparent;border:1.5px solid var(--amber);color:var(--amber)}
+.btn-outline:hover{background:var(--amber);color:#000}
+.btn-sm{padding:.4rem 1rem;font-size:.78rem}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#e05550}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+#admin-bar{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;display:none;flex-direction:column;align-items:flex-end;gap:.6rem}
+.admin-mode #admin-bar{display:flex}
+.admin-tip{background:var(--amber);color:#000;font-size:.72rem;font-weight:600;padding:.35rem .85rem;border-radius:2rem;white-space:nowrap}
+.about-grid{display:grid;grid-template-columns:300px 1fr;gap:3rem;align-items:start}
+.about-photo-section{position:sticky;top:7rem}
+.about-photo-big{width:100%;aspect-ratio:1;border-radius:1.25rem;object-fit:cover;border:2px solid var(--border);display:block}
+.about-photo-ph{width:100%;aspect-ratio:1;border-radius:1.25rem;background:linear-gradient(135deg,var(--card),var(--border));display:flex;align-items:center;justify-content:center;font-size:5rem}
+.about-edit-photo-btn{display:none;width:100%;margin-top:.75rem}
+.admin-mode .about-edit-photo-btn{display:flex}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem}
+.interest-tag{background:var(--border);color:var(--amber);padding:.3rem .85rem;border-radius:2rem;font-size:.78rem;font-weight:500}
+.about-content-text{line-height:1.85;font-size:1rem;color:var(--text);opacity:.9;white-space:pre-wrap}
+.admin-mode .edit-btn-row{display:flex}
+.edit-btn-row{display:none;gap:.75rem;margin-top:1rem}
+textarea.field{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.85rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;resize:vertical;outline:none;transition:border-color .2s}
+textarea.field:focus{border-color:var(--amber)}
+input.field{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;outline:none;transition:border-color .2s}
+input.field:focus{border-color:var(--amber)}
+.research-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.add-research-btn{display:none}
+.admin-mode .add-research-btn{display:inline-flex}
+.research-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.research-card{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1.75rem;transition:transform .2s,border-color .2s;position:relative}
+.research-card:hover{transform:translateY(-3px);border-color:var(--amber)}
+.rc-year{font-size:.72rem;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-bottom:.5rem}
+.rc-type{display:inline-block;background:var(--border);color:var(--muted);font-size:.7rem;padding:.2rem .65rem;border-radius:2rem;margin-bottom:.75rem;font-weight:500}
+.rc-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:.6rem;line-height:1.4}
+.rc-desc{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.rc-journal{font-size:.78rem;color:var(--blue)}
+.rc-actions{display:none;position:absolute;top:1rem;right:1rem;gap:.4rem}
+.admin-mode .rc-actions{display:flex}
+.notes-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.add-course-btn{display:none}
+.admin-mode .add-course-btn{display:inline-flex}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.course-tile{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1.5rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.course-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--amber)}
+.course-tile:hover{border-color:var(--amber);transform:translateY(-2px)}
+.ct-code{font-size:.7rem;color:var(--amber);font-weight:700;letter-spacing:.1em;margin-bottom:.4rem}
+.ct-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:.4rem}
+.ct-count{font-size:.78rem;color:var(--muted)}
+.ct-actions{display:none;position:absolute;top:.75rem;right:.75rem;gap:.4rem}
+.admin-mode .ct-actions{display:flex}
+#course-detail{display:none}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.85rem;cursor:pointer;margin-bottom:2rem;transition:color .2s;background:none;border:none;font-family:'Outfit',sans-serif}
+.back-btn:hover{color:var(--amber)}
+.course-detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
+.add-topic-btn{display:none}
+.admin-mode .add-topic-btn{display:inline-flex}
+.topic-section{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;margin-bottom:1.25rem;overflow:hidden}
+.topic-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;cursor:pointer;transition:background .2s}
+.topic-header:hover{background:rgba(232,160,64,.04)}
+.topic-title-row{display:flex;align-items:center;gap:.75rem}
+.topic-icon{color:var(--amber);font-size:1rem}
+.topic-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream)}
+.topic-count{font-size:.75rem;color:var(--muted);background:var(--border);padding:.2rem .6rem;border-radius:2rem}
+.topic-chevron{color:var(--muted);transition:transform .3s;font-size:.9rem}
+.topic-section.open .topic-chevron{transform:rotate(180deg)}
+.topic-body{display:none;padding:0 1.5rem 1.5rem;border-top:1px solid var(--border)}
+.topic-section.open .topic-body{display:block}
+.notes-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.note-item{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:.75rem;padding:.85rem 1.1rem;transition:border-color .2s}
+.note-item:hover{border-color:var(--amber)}
+.note-item-left{display:flex;align-items:center;gap:.75rem}
+.note-file-icon{font-size:1.2rem}
+.note-file-name{font-size:.88rem;color:var(--text);font-weight:500}
+.note-file-size{font-size:.73rem;color:var(--muted);margin-top:.1rem}
+.note-item-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.note-preview-btn{background:transparent;border:1px solid var(--blue);color:var(--blue);padding:.4rem .9rem;border-radius:2rem;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s}
+.note-preview-btn:hover{background:var(--blue);color:#fff}
+.note-download-btn{background:var(--border);border:none;color:var(--amber);padding:.4rem .9rem;border-radius:2rem;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s}
+.note-download-btn:hover{background:var(--amber);color:#000}
+.note-delete-btn{display:none;background:transparent;border:1px solid var(--red);color:var(--red);padding:.35rem .75rem;border-radius:2rem;font-size:.73rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+.note-delete-btn:hover{background:var(--red);color:#fff}
+.admin-mode .note-delete-btn{display:inline-block}
+.topic-admin-row{display:none;margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--border);gap:.75rem;align-items:center;flex-wrap:wrap}
+.admin-mode .topic-admin-row{display:flex}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:1rem;padding:1.4rem;display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+.ci-icon{font-size:1.4rem;flex-shrink:0}
+.ci-label{font-size:.7rem;color:var(--muted);margin-bottom:.2rem}
+.ci-val{font-size:.92rem;color:var(--cream);font-weight:500}
+.contact-form-wrap{display:flex;flex-direction:column;gap:1rem}
+.form-label{font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:.3rem;letter-spacing:.04em}
+.contact-form-wrap input,.contact-form-wrap textarea{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.8rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;outline:none;transition:border-color .2s}
+.contact-form-wrap input:focus,.contact-form-wrap textarea:focus{border-color:var(--amber)}
+.contact-form-wrap textarea{resize:vertical;min-height:120px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:1.5rem;padding:2.5rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);margin-bottom:1.5rem}
+.modal-field{margin-bottom:1.1rem}
+.modal-field label{display:block;font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:.4rem;letter-spacing:.04em}
+.modal-actions{display:flex;gap:.75rem;margin-top:1.75rem;justify-content:flex-end}
+.file-upload-area{border:2px dashed var(--border);border-radius:.75rem;padding:2rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
+.file-upload-area:hover{border-color:var(--amber)}
+.file-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.file-upload-area p{color:var(--muted);font-size:.85rem;pointer-events:none}
+.file-selected{font-size:.8rem;color:var(--green);margin-top:.5rem}
+#login-modal .modal{max-width:400px}
+.login-logo{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--amber);text-align:center;margin-bottom:.5rem;font-style:italic}
+.login-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+#login-error{color:var(--red);font-size:.82rem;margin-top:.5rem;display:none}
+#toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:.75rem 1.75rem;border-radius:2rem;font-size:.85rem;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:600;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.5}
+@media(max-width:900px){
+  .hero-wrap,.about-grid,.research-grid,.contact-grid{grid-template-columns:1fr}
+  .courses-grid{grid-template-columns:1fr 1fr}
+  nav{padding:.9rem 1.25rem}
+  .container{padding:0 1.25rem}
+}
+@media(max-width:600px){
+  .courses-grid,.research-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+ 
+<nav>
+  <div class="nav-logo">∫ Prof. Portal</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a onclick="showPage('research')" id="nav-research">Research</a></li>
+    <li><a onclick="showPage('notes')" id="nav-notes">Notes</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="theme-btn" onclick="toggleTheme()" style="background:transparent;border:none;color:var(--amber);cursor:pointer;font-size:1.2rem;margin-right:0.5rem;" title="Toggle Theme">🌓</button>
+    <span id="admin-badge">⚡ Admin Mode</span>
+    <button id="login-btn" onclick="openLoginModal()">Admin Login</button>
+  </div>
+</nav>
+ 
+<div id="admin-bar">
+  <div class="admin-tip">✏️ Admin Mode — You can edit everything</div>
+  <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+</div>
+ 
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="container">
+    <div class="hero-wrap">
+      <div>
+        <div class="hero-tag">Department of Mathematics</div>
+        <h1 class="hero-name"><em id="hero-firstname">Alan</em><br><span id="hero-lastname">Carter</span></h1>
+        <p class="hero-dept" id="hero-title-display">Associate Professor · University of Westbridge</p>
+        <p class="hero-bio-text" id="hero-short-bio">Passionate about making mathematics beautiful, accessible, and alive. My door is always open.</p>
+        <div class="hero-btns">
+          <button class="btn btn-amber" onclick="showPage('about')">About Me</button>
+          <button class="btn btn-outline" onclick="showPage('notes')">Course Notes</button>
+        </div>
+      </div>
+      <div class="prof-card">
+        <div class="prof-photo-wrap">
+          <div class="prof-photo-placeholder" id="home-photo-ph">👨‍🏫</div>
+          <img id="home-photo-img" class="prof-photo" style="display:none" src="" alt="Professor"/>
+          <button class="photo-edit-btn" onclick="document.getElementById('photo-upload-home').click()">📷</button>
+          <input type="file" id="photo-upload-home" accept="image/*" style="display:none" onchange="handlePhotoUpload(this,'home')"/>
+        </div>
+        <div class="card-name" id="card-fullname">Dr. Alan Carter</div>
+        <div class="card-sub" id="card-email">alan.carter@westbridge.edu</div>
+        <div class="card-stats">
+          <div><div class="stat-n" id="stat-years">14</div><div class="stat-l">Yrs Teaching</div></div>
+          <div><div class="stat-n" id="stat-pubs">0</div><div class="stat-l">Publications</div></div>
+          <div><div class="stat-n" id="stat-courses">0</div><div class="stat-l">Courses</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="container">
+    <div style="margin-bottom:2.5rem">
+      <div class="s-tag">About Me</div>
+      <h2 class="s-title">The mathematician<br>behind the board</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-photo-section">
+        <div id="about-photo-ph" class="about-photo-ph">👨‍🏫</div>
+        <img id="about-photo-img" class="about-photo-big" style="display:none" src="" alt="Professor"/>
+        <button class="btn btn-outline btn-sm about-edit-photo-btn" onclick="document.getElementById('photo-upload-about').click()">📷 Change Photo</button>
+        <input type="file" id="photo-upload-about" accept="image/*" style="display:none" onchange="handlePhotoUpload(this,'about')"/>
+        <div class="tags-wrap" id="interests-wrap"></div>
+        <div style="margin-top:1rem;display:none" id="interests-admin-row">
+          <button class="btn btn-ghost btn-sm" onclick="openInterestModal()">+ Add Interest Tag</button>
+        </div>
+      </div>
+      <div>
+        <div id="about-view-mode">
+          <div id="about-content-display" class="about-content-text" style="min-height:200px;color:var(--muted);font-style:italic">No bio added yet. Admin can click Edit to add one.</div>
+          <div class="edit-btn-row">
+            <button class="btn btn-outline btn-sm" onclick="toggleAboutEdit(true)">✏️ Edit Bio</button>
+          </div>
+        </div>
+        <div id="about-edit-mode" style="display:none">
+          <div class="modal-field"><label>Full Name</label><input class="field" id="edit-fullname" placeholder="Dr. Alan Carter"/></div>
+          <div class="modal-field"><label>Title / Position</label><input class="field" id="edit-title" placeholder="Associate Professor · University of Westbridge"/></div>
+          <div class="modal-field"><label>Email</label><input class="field" id="edit-email" placeholder="alan@university.edu"/></div>
+          <div class="modal-field"><label>Short Bio (shown on homepage)</label><textarea class="field" id="edit-short-bio" rows="2" placeholder="A one-liner about you..."></textarea></div>
+          <div class="modal-field"><label>Full Bio</label><textarea class="field" id="edit-full-bio" rows="8" placeholder="Write your full biography here..."></textarea></div>
+          <div class="modal-field"><label>Years of Teaching</label><input class="field" id="edit-years" type="number" placeholder="14"/></div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <button class="btn btn-amber" onclick="saveAbout()">💾 Save Changes</button>
+            <button class="btn btn-ghost" onclick="toggleAboutEdit(false)">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- RESEARCH -->
+<div class="page" id="page-research">
+  <div class="container">
+    <div class="research-header">
+      <div>
+        <div class="s-tag">Research</div>
+        <h2 class="s-title">Publications & Projects</h2>
+        <p class="s-sub" style="margin-bottom:0">Exploring the frontiers of mathematics through rigorous research.</p>
+      </div>
+      <button class="btn btn-amber add-research-btn" onclick="openResearchModal()">+ Add Publication</button>
+    </div>
+    <div class="research-grid" id="research-grid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>
+    </div>
+  </div>
+</div>
+ 
+<!-- NOTES -->
+<div class="page" id="page-notes">
+  <div class="container">
+    <div id="courses-list-view">
+      <div class="notes-header">
+        <div>
+          <div class="s-tag">Course Notes</div>
+          <h2 class="s-title">Materials & Resources</h2>
+          <p class="s-sub" style="margin-bottom:0">Select a course to access lecture notes, problem sets, and more.</p>
+        </div>
+        <button class="btn btn-amber add-course-btn" onclick="openAddCourseModal()">+ Add Course</button>
+      </div>
+      <div class="courses-grid" id="courses-grid">
+        <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>No courses added yet.</p></div>
+      </div>
+    </div>
+    <div id="course-detail">
+      <button class="back-btn" onclick="backToCourses()">← Back to Courses</button>
+      <div class="course-detail-header">
+        <div>
+          <div class="s-tag" id="detail-course-code">MATH 101</div>
+          <h2 class="s-title" id="detail-course-name">Calculus I</h2>
+        </div>
+        <button class="btn btn-amber add-topic-btn" onclick="openAddTopicModal()">+ Add Topic</button>
+      </div>
+      <div id="topics-list"></div>
+    </div>
+  </div>
+</div>
+ 
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="container">
+    <div style="margin-bottom:2.5rem">
+      <div class="s-tag">Contact</div>
+      <h2 class="s-title">Let's Talk Math</h2>
+      <p class="s-sub">Questions, office hours, research inquiries — my inbox is open.</p>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-card"><div class="ci-icon">📍</div><div><div class="ci-label">Office</div><div class="ci-val" id="c-office">Math Building, Room 214</div></div></div>
+        <div class="contact-card"><div class="ci-icon">🕐</div><div><div class="ci-label">Office Hours</div><div class="ci-val" id="c-hours">Mon & Wed 2–4 PM · Fri 10 AM–12 PM</div></div></div>
+        <div class="contact-card"><div class="ci-icon">✉️</div><div><div class="ci-label">Email</div><div class="ci-val" id="c-email-display">alan.carter@westbridge.edu</div></div></div>
+        <div class="contact-card"><div class="ci-icon">🏛️</div><div><div class="ci-label">University</div><div class="ci-val">University of Westbridge</div></div></div>
+      </div>
+      <div class="contact-form-wrap">
+        <div><div class="form-label">Your Name</div><input type="text" placeholder="Jane Smith"/></div>
+        <div><div class="form-label">Email</div><input type="email" placeholder="jane@student.edu"/></div>
+        <div><div class="form-label">Subject</div><input type="text" placeholder="Question about..."/></div>
+        <div><div class="form-label">Message</div><textarea placeholder="Hi Professor, I had a question about..."></textarea></div>
+        <button class="btn btn-amber" style="width:100%;justify-content:center" onclick="showToast('Message sent! ✉️')">Send Message</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- MODALS -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <div class="login-logo">∫ Admin Login</div>
+    <div class="login-sub">Enter the admin password to enable editing</div>
+    <div class="modal-field">
+      <label>Password</label>
+      <input class="field" type="password" id="login-pw" placeholder="Enter password..." onkeydown="if(event.key==='Enter')doLogin()"/>
+      <div id="login-error">Incorrect password. Try: <strong>admin123</strong></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('login-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="doLogin()">Login</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="password-modal">
+  <div class="modal" style="max-width:400px">
+    <h3>Set a Custom Password?</h3>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.5">You just logged in with the default password. Would you like to set a safer, custom password for your admin portal?</p>
+    <div class="modal-field">
+      <label>New Password</label>
+      <input class="field" type="password" id="new-pw" placeholder="Enter new password..."/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePasswordModal()">Skip for now</button>
+      <button class="btn btn-amber" onclick="changePassword()">Save Password</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="research-modal">
+  <div class="modal">
+    <h3 id="research-modal-title">Add Publication / Project</h3>
+    <div class="modal-field"><label>Title</label><input class="field" id="r-title" placeholder="Publication or project title..."/></div>
+    <div class="modal-field"><label>Type</label>
+      <select class="field" id="r-type" style="background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;width:100%">
+        <option>Journal Paper</option><option>Conference Paper</option><option>Book Chapter</option><option>Project</option><option>Thesis</option>
+      </select>
+    </div>
+    <div class="modal-field"><label>Year</label><input class="field" id="r-year" placeholder="2024"/></div>
+    <div class="modal-field"><label>Journal / Venue</label><input class="field" id="r-journal" placeholder="Journal of Mathematics..."/></div>
+    <div class="modal-field"><label>Co-authors</label><input class="field" id="r-authors" placeholder="with J. Smith, A. Doe..."/></div>
+    <div class="modal-field"><label>Description</label><textarea class="field" id="r-desc" rows="3" placeholder="Brief summary of the work..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('research-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="saveResearch()">Save</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="course-modal">
+  <div class="modal">
+    <h3>Add Course</h3>
+    <div class="modal-field"><label>Course Code</label><input class="field" id="c-code" placeholder="MATH 101"/></div>
+    <div class="modal-field"><label>Course Name</label><input class="field" id="c-name" placeholder="Calculus I"/></div>
+    <div class="modal-field"><label>Description</label><textarea class="field" id="c-desc" rows="3" placeholder="Brief description..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('course-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="saveCourse()">Create Course</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="topic-modal">
+  <div class="modal">
+    <h3>Add Topic / Subtopic</h3>
+    <div class="modal-field"><label>Topic Name</label><input class="field" id="t-name" placeholder="Chapter 1: Limits and Continuity"/></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('topic-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="saveTopic()">Add Topic</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="note-modal">
+  <div class="modal">
+    <h3>Upload Notes</h3>
+    <div class="modal-field"><label>Note Title</label><input class="field" id="n-title" placeholder="Lecture 1 Notes / Problem Set 2..."/></div>
+    <div class="modal-field">
+      <label>Upload File (PDF, image, doc, etc.)</label>
+      <div class="file-upload-area">
+        <input type="file" id="n-file" onchange="updateFileLabel()"/>
+        <p>📎 Click or drag a file here</p>
+      </div>
+      <div class="file-selected" id="file-label"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('note-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="saveNote()">Upload</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="modal-overlay" id="interest-modal">
+  <div class="modal">
+    <h3>Add Interest Tag</h3>
+    <div class="modal-field"><label>Tag</label><input class="field" id="interest-input" placeholder="e.g. Topology, PDEs, Number Theory..."/></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('interest-modal')">Cancel</button>
+      <button class="btn btn-amber" onclick="saveInterest()">Add Tag</button>
+    </div>
+  </div>
+</div>
+ 
+<div id="toast">✓ Saved!</div>
+ 
+<script>
+var ADMIN_PASSWORD = 'admin123';
+var isAdmin = false;
+ 
+var defaultState = {
+  profile: {
+    fullname: 'Dr. Alan Carter', firstname: 'Alan', lastname: 'Carter',
+    title: 'Associate Professor · University of Westbridge',
+    email: 'alan.carter@westbridge.edu',
+    shortBio: 'Passionate about making mathematics beautiful, accessible, and alive. My door is always open.',
+    fullBio: '', years: '14', photo: null,
+    interests: ['PDEs', 'Topology', 'Fluid Dynamics'],
+    office: 'Math Building, Room 214', hours: 'Mon & Wed 2–4 PM · Fri 10 AM–12 PM'
+  },
+  research: [], courses: []
+};
+ 
+var API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? 'http://localhost:3000/api' 
+  : window.location.origin + '/api';
+var state = JSON.parse(JSON.stringify(defaultState));
+
+// Load State from Backend
+async function loadState() {
+  try {
+    const res = await fetch(API_URL + '/state');
+    if (res.ok) {
+      const data = await res.json();
+      state = data;
+    }
+  } catch (e) {
+    console.error('Failed to load state from backend:', e);
+  }
+}
+
+// Save State to Backend
+async function saveState() {
+  try {
+    await fetch(API_URL + '/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state)
+    });
+  } catch (e) {
+    showToast('Failed to save to server');
+  }
+}
+
+// Ensure init waits for State Load
+async function boot() {
+  await loadState();
+  init();
+}
+boot();
+ 
+// PAGE NAV
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-links a').forEach(function(a){ a.classList.remove('active'); });
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'notes') renderCourses();
+  if (name === 'research') renderResearch();
+  if (name === 'about') renderAbout();
+}
+ 
+// ADMIN AUTH
+var ADMIN_PASSWORD = ''; // Removed hardcoded password
+
+function openLoginModal() { document.getElementById('login-pw').value = ''; document.getElementById('login-error').style.display='none'; openModal('login-modal'); }
+
+async function doLogin() {
+  var pw = document.getElementById('login-pw').value;
+  try {
+    const res = await fetch(API_URL + '/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      ADMIN_PASSWORD = pw; // Temporary session storage
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('admin-badge').style.display = 'inline-block';
+      document.getElementById('login-btn').textContent = 'Admin ✓';
+      document.getElementById('login-btn').style.background = 'var(--amber)';
+      document.getElementById('login-btn').style.color = '#000';
+      document.getElementById('login-btn').onclick = null;
+      document.getElementById('interests-admin-row').style.display = 'flex';
+      closeModal('login-modal');
+      
+      if (data.isDefault) {
+        openModal('password-modal');
+      } else {
+        showToast('Welcome back, Professor! ✨');
+      }
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-error').innerHTML = 'Incorrect password.';
+    }
+  } catch(e) {
+    showToast('Login server error');
+  }
+}
+
+function closePasswordModal() {
+  closeModal('password-modal');
+  showToast('Welcome back, Professor! ✨ (Using default password)');
+}
+
+async function changePassword() {
+  var newPw = document.getElementById('new-pw').value.trim();
+  if (!newPw) return showToast('Please enter a password');
+  
+  try {
+    const res = await fetch(API_URL + '/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword: newPw })
+    });
+    if (res.ok) {
+      ADMIN_PASSWORD = newPw;
+      closeModal('password-modal');
+      showToast('Password successfully changed! 🔒');
+    }
+  } catch(e) {
+    showToast('Failed to change password');
+  }
+}
+function logout() {
+  isAdmin = false;
+  document.body.classList.remove('admin-mode');
+  document.getElementById('admin-badge').style.display = 'none';
+  document.getElementById('login-btn').textContent = 'Admin Login';
+  document.getElementById('login-btn').style.background = '';
+  document.getElementById('login-btn').style.color = '';
+  document.getElementById('login-btn').onclick = openLoginModal;
+  document.getElementById('interests-admin-row').style.display = 'none';
+  showToast('Logged out');
+}
+ 
+// MODALS
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(function(m) {
+  m.addEventListener('click', function(e) { if (e.target === m) m.classList.remove('open'); });
+});
+ 
+// PHOTO UPLOAD
+async function handlePhotoUpload(input, target) {
+  var file = input.files[0];
+  if (!file) return;
+
+  var formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const res = await fetch(API_URL + '/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      state.profile.photo = data.fileUrl; // Save image URL rather than Base64
+      await saveState();
+      applyPhoto();
+      showToast('Photo uploaded to server!');
+    }
+  } catch (err) {
+    showToast('Failed to upload photo');
+  }
+}
+function applyPhoto() {
+  var src = state.profile.photo;
+  ['home','about'].forEach(function(t) {
+    var ph = document.getElementById(t + '-photo-ph');
+    var img = document.getElementById(t + '-photo-img');
+    if (src) { ph.style.display = 'none'; img.src = src; img.style.display = 'block'; }
+    else { ph.style.display = 'flex'; img.style.display = 'none'; }
+  });
+}
+ 
+// ABOUT
+function renderAbout() {
+  var p = state.profile;
+  var el = document.getElementById('about-content-display');
+  el.textContent = p.fullBio || 'No bio added yet. Admin can click Edit to add one.';
+  el.style.fontStyle = p.fullBio ? 'normal' : 'italic';
+  el.style.color = p.fullBio ? 'var(--text)' : 'var(--muted)';
+  renderInterests();
+  applyPhoto();
+}
+function toggleAboutEdit(on) {
+  document.getElementById('about-view-mode').style.display = on ? 'none' : 'block';
+  document.getElementById('about-edit-mode').style.display = on ? 'block' : 'none';
+  if (on) {
+    var p = state.profile;
+    document.getElementById('edit-fullname').value = p.fullname;
+    document.getElementById('edit-title').value = p.title;
+    document.getElementById('edit-email').value = p.email;
+    document.getElementById('edit-short-bio').value = p.shortBio;
+    document.getElementById('edit-full-bio').value = p.fullBio;
+    document.getElementById('edit-years').value = p.years;
+  }
+}
+function saveAbout() {
+  var p = state.profile;
+  p.fullname = document.getElementById('edit-fullname').value || p.fullname;
+  p.title = document.getElementById('edit-title').value || p.title;
+  p.email = document.getElementById('edit-email').value || p.email;
+  p.shortBio = document.getElementById('edit-short-bio').value || p.shortBio;
+  p.fullBio = document.getElementById('edit-full-bio').value;
+  p.years = document.getElementById('edit-years').value || p.years;
+  var parts = p.fullname.replace(/^Dr\.?\s*/i,'').trim().split(' ');
+  p.firstname = parts[0] || 'Alan';
+  p.lastname = parts.slice(1).join(' ') || 'Carter';
+  saveState();
+  applyProfileToUI();
+  toggleAboutEdit(false);
+  renderAbout();
+  showToast('Bio saved!');
+}
+function applyProfileToUI() {
+  var p = state.profile;
+  document.getElementById('hero-firstname').textContent = p.firstname;
+  document.getElementById('hero-lastname').textContent = p.lastname;
+  document.getElementById('hero-title-display').textContent = p.title;
+  document.getElementById('hero-short-bio').textContent = p.shortBio;
+  document.getElementById('card-fullname').textContent = p.fullname;
+  document.getElementById('card-email').textContent = p.email;
+  document.getElementById('stat-years').textContent = p.years;
+  document.getElementById('c-email-display').textContent = p.email;
+}
+ 
+// INTERESTS
+function renderInterests() {
+  var wrap = document.getElementById('interests-wrap');
+  wrap.innerHTML = '';
+  (state.profile.interests || []).forEach(function(tag, i) {
+    var el = document.createElement('div');
+    el.className = 'interest-tag';
+    el.style.cursor = isAdmin ? 'pointer' : 'default';
+    el.innerHTML = tag + (isAdmin ? ' <span style="color:var(--red);margin-left:.3rem" title="Remove">×</span>' : '');
+    if (isAdmin) {
+      (function(idx){ el.querySelector('span').onclick = function(){ removeInterest(idx); }; })(i);
+    }
+    wrap.appendChild(el);
+  });
+}
+function openInterestModal() { openModal('interest-modal'); }
+function saveInterest() {
+  var val = document.getElementById('interest-input').value.trim();
+  if (!val) return;
+  state.profile.interests.push(val);
+  saveState(); renderInterests();
+  document.getElementById('interest-input').value = '';
+  closeModal('interest-modal');
+  showToast('Tag added!');
+}
+function removeInterest(i) {
+  state.profile.interests.splice(i, 1);
+  saveState(); renderInterests();
+}
+ 
+// RESEARCH
+var editingResearchId = null;
+function openResearchModal(id) {
+  editingResearchId = id || null;
+  var r = id ? state.research.find(function(x){ return x.id === id; }) : null;
+  document.getElementById('research-modal-title').textContent = r ? 'Edit Publication' : 'Add Publication / Project';
+  document.getElementById('r-title').value = r ? r.title : '';
+  document.getElementById('r-type').value = r ? r.type : 'Journal Paper';
+  document.getElementById('r-year').value = r ? r.year : new Date().getFullYear();
+  document.getElementById('r-journal').value = r ? r.journal : '';
+  document.getElementById('r-authors').value = r ? r.authors : '';
+  document.getElementById('r-desc').value = r ? r.desc : '';
+  openModal('research-modal');
+}
+function saveResearch() {
+  var title = document.getElementById('r-title').value.trim();
+  if (!title) return showToast('Please enter a title');
+  var item = {
+    id: editingResearchId || Date.now().toString(),
+    title: title, type: document.getElementById('r-type').value,
+    year: document.getElementById('r-year').value,
+    journal: document.getElementById('r-journal').value,
+    authors: document.getElementById('r-authors').value,
+    desc: document.getElementById('r-desc').value
+  };
+  if (editingResearchId) {
+    var idx = state.research.findIndex(function(x){ return x.id === editingResearchId; });
+    state.research[idx] = item;
+  } else { state.research.unshift(item); }
+  saveState(); updateStats(); renderResearch();
+  closeModal('research-modal');
+  showToast(editingResearchId ? 'Publication updated!' : 'Publication added!');
+}
+function deleteResearch(id) {
+  if (!confirm('Delete this publication?')) return;
+  state.research = state.research.filter(function(x){ return x.id !== id; });
+  saveState(); updateStats(); renderResearch();
+  showToast('Deleted');
+}
+function renderResearch() {
+  var grid = document.getElementById('research-grid');
+  if (!state.research.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>';
+    return;
+  }
+  grid.innerHTML = state.research.map(function(r) {
+    return '<div class="research-card">'
+      + '<div class="rc-year">' + r.year + '</div>'
+      + '<div class="rc-type">' + r.type + '</div>'
+      + '<div class="rc-title">' + r.title + '</div>'
+      + '<div class="rc-desc">' + r.desc + '</div>'
+      + '<div class="rc-journal">' + r.journal + (r.authors ? ' · ' + r.authors : '') + '</div>'
+      + '<div class="rc-actions">'
+      + '<button class="btn btn-ghost btn-sm" onclick="openResearchModal(\'' + r.id + '\')">✏️</button>'
+      + '<button class="btn btn-danger btn-sm" onclick="deleteResearch(\'' + r.id + '\')">🗑</button>'
+      + '</div></div>';
+  }).join('');
+}
+ 
+// COURSES
+var currentCourseId = null;
+function openAddCourseModal() {
+  document.getElementById('c-code').value = '';
+  document.getElementById('c-name').value = '';
+  document.getElementById('c-desc').value = '';
+  openModal('course-modal');
+}
+function saveCourse() {
+  var code = document.getElementById('c-code').value.trim();
+  var name = document.getElementById('c-name').value.trim();
+  if (!code || !name) return showToast('Enter code and name');
+  state.courses.push({ id: Date.now().toString(), code: code, name: name, desc: document.getElementById('c-desc').value, topics: [] });
+  saveState(); updateStats(); renderCourses();
+  closeModal('course-modal');
+  showToast('Course created!');
+}
+function deleteCourse(id) {
+  if (!confirm('Delete this course and all its notes?')) return;
+  state.courses = state.courses.filter(function(x){ return x.id !== id; });
+  saveState(); updateStats(); renderCourses();
+  showToast('Course deleted');
+}
+function renderCourses() {
+  var grid = document.getElementById('courses-grid');
+  if (!state.courses.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>No courses added yet.</p></div>';
+    return;
+  }
+  grid.innerHTML = state.courses.map(function(c) {
+    var noteCount = c.topics.reduce(function(a,t){ return a + t.notes.length; }, 0);
+    return '<div class="course-tile" onclick="openCourse(\'' + c.id + '\')">'
+      + '<div class="ct-actions" onclick="event.stopPropagation()">'
+      + '<button class="btn btn-danger btn-sm" onclick="deleteCourse(\'' + c.id + '\')">🗑</button>'
+      + '</div>'
+      + '<div class="ct-code">' + c.code + '</div>'
+      + '<div class="ct-name">' + c.name + '</div>'
+      + '<div class="ct-count">' + c.topics.length + ' topic' + (c.topics.length!==1?'s':'') + ' · ' + noteCount + ' file' + (noteCount!==1?'s':'') + '</div>'
+      + '</div>';
+  }).join('');
+}
+ 
+// COURSE DETAIL
+function openCourse(id) {
+  currentCourseId = id;
+  var course = state.courses.find(function(c){ return c.id === id; });
+  document.getElementById('detail-course-code').textContent = course.code;
+  document.getElementById('detail-course-name').textContent = course.name;
+  document.getElementById('courses-list-view').style.display = 'none';
+  document.getElementById('course-detail').style.display = 'block';
+  renderTopics();
+}
+function backToCourses() {
+  currentCourseId = null;
+  document.getElementById('courses-list-view').style.display = 'block';
+  document.getElementById('course-detail').style.display = 'none';
+}
+function openAddTopicModal() {
+  document.getElementById('t-name').value = '';
+  openModal('topic-modal');
+}
+function saveTopic() {
+  var name = document.getElementById('t-name').value.trim();
+  if (!name) return showToast('Enter topic name');
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  course.topics.push({ id: Date.now().toString(), name: name, notes: [] });
+  saveState(); renderTopics();
+  closeModal('topic-modal');
+  showToast('Topic added!');
+}
+function deleteTopic(topicId) {
+  if (!confirm('Delete this topic?')) return;
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  course.topics = course.topics.filter(function(t){ return t.id !== topicId; });
+  saveState(); renderTopics();
+  showToast('Topic deleted');
+}
+ 
+// ── KEY FIX: renderTopics uses plain string concat, NO nested backticks ──
+function fileIcon(type) {
+  if (!type) return '📄';
+  if (type.indexOf('pdf') !== -1) return '📕';
+  if (type.indexOf('image') !== -1) return '🖼️';
+  if (type.indexOf('word') !== -1 || type.indexOf('doc') !== -1) return '📝';
+  if (type.indexOf('sheet') !== -1 || type.indexOf('excel') !== -1 || type.indexOf('csv') !== -1) return '📊';
+  if (type.indexOf('zip') !== -1 || type.indexOf('rar') !== -1) return '📦';
+  return '📄';
+}
+ 
+function buildNoteHTML(t, n) {
+  var isPdf = n.type && n.type.indexOf('pdf') !== -1;
+  var previewBtn = isPdf
+    ? '<button class="note-preview-btn" onclick="previewNote(\'' + t.id + '\',\'' + n.id + '\')">👁 Preview</button>'
+    : '';
+  return '<div class="note-item">'
+    + '<div class="note-item-left">'
+    + '<span class="note-file-icon">' + fileIcon(n.type) + '</span>'
+    + '<div>'
+    + '<div class="note-file-name">' + n.title + '</div>'
+    + '<div class="note-file-size">' + n.filename + ' · ' + n.size + '</div>'
+    + '</div></div>'
+    + '<div class="note-item-right">'
+    + previewBtn
+    + '<button class="note-download-btn" onclick="downloadNote(\'' + t.id + '\',\'' + n.id + '\')">↓ Download</button>'
+    + '<button class="note-delete-btn" onclick="deleteNote(\'' + t.id + '\',\'' + n.id + '\')">🗑 Delete</button>'
+    + '</div></div>';
+}
+ 
+function renderTopics() {
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  var list = document.getElementById('topics-list');
+  if (!course.topics.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No topics yet. Add a topic to get started.</p></div>';
+    return;
+  }
+  var html = '';
+  course.topics.forEach(function(t) {
+    var notesHTML = '';
+    if (t.notes.length) {
+      t.notes.forEach(function(n){ notesHTML += buildNoteHTML(t, n); });
+    } else {
+      notesHTML = '<div style="color:var(--muted);font-size:.85rem;padding:.5rem 0">No notes uploaded yet.</div>';
+    }
+    html += '<div class="topic-section" id="topic-' + t.id + '">'
+      + '<div class="topic-header" onclick="toggleTopic(\'' + t.id + '\')">'
+      + '<div class="topic-title-row">'
+      + '<span class="topic-icon">📁</span>'
+      + '<span class="topic-name">' + t.name + '</span>'
+      + '<span class="topic-count">' + t.notes.length + ' file' + (t.notes.length!==1?'s':'') + '</span>'
+      + '</div><span class="topic-chevron">▼</span></div>'
+      + '<div class="topic-body">'
+      + '<div class="notes-list">' + notesHTML + '</div>'
+      + '<div class="topic-admin-row">'
+      + '<button class="btn btn-outline btn-sm" onclick="openNoteModal(\'' + t.id + '\')">+ Upload Notes</button>'
+      + '<button class="btn btn-danger btn-sm" onclick="deleteTopic(\'' + t.id + '\')">🗑 Delete Topic</button>'
+      + '</div></div></div>';
+  });
+  list.innerHTML = html;
+}
+ 
+function toggleTopic(id) {
+  document.getElementById('topic-' + id).classList.toggle('open');
+}
+ 
+// NOTES
+var currentTopicId = null;
+function openNoteModal(topicId) {
+  currentTopicId = topicId;
+  document.getElementById('n-title').value = '';
+  document.getElementById('n-file').value = '';
+  document.getElementById('file-label').textContent = '';
+  openModal('note-modal');
+}
+function updateFileLabel() {
+  var f = document.getElementById('n-file').files[0];
+  document.getElementById('file-label').textContent = f ? '✓ ' + f.name : '';
+}
+// NOTE UPLOAD
+async function saveNote() {
+  var title = document.getElementById('n-title').value.trim();
+  var file = document.getElementById('n-file').files[0];
+  if (!title) return showToast('Enter a note title');
+  if (!file) return showToast('Please select a file');
+
+  var formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    showToast('Uploading file...');
+    const res = await fetch(API_URL + '/upload', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+      var topic = course.topics.find(function(t){ return t.id === currentTopicId; });
+      topic.notes.push({
+        id: Date.now().toString(),
+        title: title,
+        filename: file.name,
+        size: formatSize(file.size),
+        type: file.type,
+        data: data.fileUrl // Store the URL generated by the backend
+      });
+      await saveState();
+      renderTopics();
+      setTimeout(function() {
+        var el = document.getElementById('topic-' + currentTopicId);
+        if (el) el.classList.add('open');
+      }, 50);
+      closeModal('note-modal');
+      showToast('Note uploaded to server!');
+    } else {
+      showToast('Error uploading file');
+    }
+  } catch (err) {
+    showToast('Upload failed');
+  }
+}
+function deleteNote(topicId, noteId) {
+  if (!confirm('Delete this note?')) return;
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  var topic = course.topics.find(function(t){ return t.id === topicId; });
+  topic.notes = topic.notes.filter(function(n){ return n.id !== noteId; });
+  saveState();
+  renderTopics();
+  setTimeout(function() {
+    var el = document.getElementById('topic-' + topicId);
+    if (el) el.classList.add('open');
+  }, 50);
+  showToast('Deleted');
+}
+ 
+// ── DOWNLOAD: base64 → Blob → object URL (works for all file types) ──
+function downloadNote(topicId, noteId) {
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  var topic = course.topics.find(function(t){ return t.id === topicId; });
+  var note = topic.notes.find(function(n){ return n.id === noteId; });
+  
+  // If it's a blob/object URL or already a base64 string
+  var a = document.createElement('a');
+  a.href = note.data;
+  a.download = note.filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('Downloading ' + note.filename + ' ↓');
+}
+ 
+// ── PREVIEW: open PDF in new tab ──
+function previewNote(topicId, noteId) {
+  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
+  var topic = course.topics.find(function(t){ return t.id === topicId; });
+  var note = topic.notes.find(function(n){ return n.id === noteId; });
+  window.open(note.data, '_blank');
+}
+ 
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1024/1024).toFixed(1) + ' MB';
+}
+ 
+// STATS
+function updateStats() {
+  document.getElementById('stat-pubs').textContent = state.research.length;
+  document.getElementById('stat-courses').textContent = state.courses.length;
+}
+ 
+// TOAST
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+ 
+// THEME
+function toggleTheme() {
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var target = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', target);
+  try { localStorage.setItem('profPortalTheme', target); } catch(e) {}
+}
+
+// INIT
+function init() {
+  var savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem('profPortalTheme') || 'dark'; } catch(e) {}
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  applyProfileToUI();
+  applyPhoto();
+  renderInterests();
+  updateStats();
+}
+</script>
+</body>
+</html>
