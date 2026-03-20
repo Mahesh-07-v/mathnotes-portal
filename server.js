@@ -21,7 +21,7 @@ const StateSchema = new mongoose.Schema({
 const State = mongoose.model('State', StateSchema);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 const isProd = process.env.NODE_ENV === 'production';
 
 // Enable CORS (allow the frontend to talk to the backend)
