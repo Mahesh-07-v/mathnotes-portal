@@ -3,6 +3,21 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
+
+// Connect to DB
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
+
+// Create Schema
+const StateSchema = new mongoose.Schema({
+  profile: Object,
+  research: Array,
+  courses: Array
+});
+
+const State = mongoose.model('State', StateSchema);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -65,61 +80,69 @@ const defaultState = {
 };
 
 // API: Get current state
-app.get('/api/state', (req, res) => {
-  if (fs.existsSync(DATA_FILE)) {
-    try {
-      const data = fs.readFileSync(DATA_FILE, 'utf8');
-      res.json(JSON.parse(data));
-    } catch (e) {
-      console.error("Error reading state.json", e);
-      res.json(defaultState);
+app.get('/api/state', async (req, res) => {
+  try {
+    let state = await State.findOne();
+
+    if (!state) {
+      state = await State.create(defaultState);
     }
-  } else {
-    // If no state file exists, return the default state
-    res.json(defaultState);
+
+    res.json(state);
+  } catch (error) {
+    console.error("Error fetching state:", error);
+    res.status(500).json(defaultState);
   }
 });
 
 // API: Save state updates
-app.post('/api/state', (req, res) => {
+app.post('/api/state', async (req, res) => {
   try {
-    const newState = req.body;
-    fs.writeFileSync(DATA_FILE, JSON.stringify(newState, null, 2), 'utf8');
-    res.json({ success: true, message: 'State saved successfully' });
+    await State.findOneAndUpdate({}, req.body, { upsert: true });
+    res.json({ success: true });
   } catch (error) {
-    console.error("Error writing state.json", error);
-    res.status(500).json({ success: false, error: 'Failed to save state' });
+    console.error("Error saving state:", error);
+    res.status(500).json({ success: false });
   }
 });
 
 // API: Verify Login
-app.post('/api/login', (req, res) => {
-  let currentState = defaultState;
-  if (fs.existsSync(DATA_FILE)) {
-    try {
-      currentState = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    } catch(e) {}
-  }
-  
-  const pw = currentState.profile.adminPassword || 'admin123';
-  if (req.body.password === pw) {
-    res.json({ success: true, isDefault: pw === 'admin123' });
-  } else {
-    res.json({ success: false });
+app.post('/api/login', async (req, res) => {
+  try {
+    let currentState = await State.findOne();
+    if (!currentState) {
+      currentState = defaultState;
+    }
+    
+    const pw = currentState.profile?.adminPassword || 'admin123';
+    if (req.body.password === pw) {
+      res.json({ success: true, isDefault: pw === 'admin123' });
+    } else {
+      res.json({ success: false });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false });
   }
 });
 
 // API: Change Password
-app.post('/api/change-password', (req, res) => {
+app.post('/api/change-password', async (req, res) => {
   try {
-    let currentState = defaultState;
-    if (fs.existsSync(DATA_FILE)) {
-      currentState = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    let currentState = await State.findOne();
+    if (!currentState) {
+      currentState = new State(defaultState);
+    } else if (typeof currentState.toObject === 'function') {
+      currentState = currentState.toObject();
     }
+    
+    if (!currentState.profile) currentState.profile = {};
     currentState.profile.adminPassword = req.body.newPassword;
-    fs.writeFileSync(DATA_FILE, JSON.stringify(currentState, null, 2), 'utf8');
+    delete currentState._id;
+    
+    await State.findOneAndUpdate({}, currentState, { upsert: true });
     res.json({ success: true });
   } catch (error) {
+    console.error("Change password error:", error);
     res.status(500).json({ success: false });
   }
 });
