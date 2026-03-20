@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -28,17 +29,9 @@ app.use(cors());
 // Parse JSON payloads for state updates
 app.use(express.json({ limit: '10mb' }));
 
-// Directories for state and uploaded files
+// Directories for state
 const DATA_FILE = path.join(__dirname, 'state.json');
-const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
-// Ensure uploads directory exists
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR);
-}
-
-// Serve uploaded files statically
-app.use('/uploads', express.static(UPLOADS_DIR));
 // Serve all static files (like web.html and resources)
 app.use(express.static(path.join(__dirname)));
 
@@ -47,21 +40,25 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'web.html'));
 });
 
-// Configure Multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, UPLOADS_DIR);
-  },
-  filename: function (req, file, cb) {
-    // Generate a unique filename using timestamp and original name
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
+// Configure Multer and Cloudinary for file uploads
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'prof-portal',
+    resource_type: 'auto' // IMPORTANT for PDFs
   }
 });
-const upload = multer({ 
-  storage: storage,
-  limits: { fileSize: 100 * 1024 * 1024 } // 100MB file size limit
-});
+
+const upload = multer({ storage: storage });
 
 // Default initial state
 const defaultState = {
@@ -149,26 +146,16 @@ app.post('/api/change-password', async (req, res) => {
 
 // API: Upload a file (Photo or PDF Note)
 app.post('/api/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
+  try {
+    res.json({
+      success: true,
+      fileUrl: req.file.path // Cloudinary URL
+    });
+  } catch (err) {
+    res.status(500).json({ success: false });
   }
-  
-  // Construct the publicly accessible URL for the uploaded file
-  // Use relative path or configured domain based on environment
-  const fileUrl = isProd 
-    ? `/uploads/${req.file.filename}` 
-    : `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-  
-  res.json({
-    success: true,
-    fileUrl: fileUrl,
-    filename: req.file.originalname,
-    mimetype: req.file.mimetype,
-    size: req.file.size
-  });
 });
 
 app.listen(port, () => {
   console.log(`Prof Portal Backend running at http://localhost:${port}`);
-  console.log(`Uploads will be saved to ${UPLOADS_DIR}`);
 });
