@@ -1,1074 +1,3116 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Prof. Portal — Mathematics</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f0e0c;--surface:#1a1814;--card:#221f1a;--border:#2e2a24;
-  --amber:#e8a040;--amber2:#f5c070;--cream:#f5edd8;--muted:#8a7d68;
-  --text:#e8dfd0;--green:#5a9e72;--red:#c0504a;--blue:#5a8fc0;
-}
-[data-theme="light"]{
-  --bg:#faf9f7;--surface:#ffffff;--card:#f5f4f1;--border:#e6e4df;
-  --amber:#d98218;--amber2:#f5a542;--cream:#1a1814;--muted:#6b645a;
-  --text:#2e2a24;--green:#4a825e;--red:#ad423d;--blue:#4a76a1;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(15,14,12,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem}
-[data-theme="light"] nav{background:rgba(250,249,247,0.92)}
-.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--amber);font-style:italic}
-.nav-links{display:flex;gap:1.8rem;list-style:none}
-.nav-links a{text-decoration:none;color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s;cursor:pointer}
-.nav-links a:hover,.nav-links a.active{color:var(--amber)}
-.nav-right{display:flex;align-items:center;gap:1rem}
-#admin-badge{background:var(--amber);color:#000;font-size:.7rem;font-weight:600;padding:.25rem .7rem;border-radius:2rem;display:none}
-#login-btn{background:transparent;border:1.5px solid var(--amber);color:var(--amber);padding:.4rem 1.1rem;border-radius:2rem;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif}
-#login-btn:hover{background:var(--amber);color:#000}
-.page{display:none;min-height:100vh;padding:6rem 0 4rem}
-.page.active{display:block}
-.container{max-width:1100px;margin:0 auto;padding:0 2.5rem}
-#page-home{background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,160,64,.08) 0%,transparent 60%)}
-.hero-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:calc(100vh - 6rem);padding:2rem 0}
-.hero-tag{display:inline-block;border:1px solid var(--amber);color:var(--amber);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .9rem;border-radius:2rem;margin-bottom:1.5rem}
-.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.1;margin-bottom:.5rem}
-.hero-name em{color:var(--amber);font-style:italic}
-.hero-dept{color:var(--muted);margin-bottom:1.5rem;font-size:1rem}
-.hero-bio-text{color:var(--text);line-height:1.8;font-size:1rem;margin-bottom:2rem;opacity:.85}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-.prof-card{background:var(--card);border:1px solid var(--border);border-radius:1.5rem;padding:2rem;box-shadow:0 24px 60px rgba(0,0,0,.4)}
-.prof-photo-wrap{position:relative;width:120px;height:120px;margin-bottom:1.5rem}
-.prof-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--amber);display:block}
-.prof-photo-placeholder{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--amber2));display:flex;align-items:center;justify-content:center;font-size:3rem;border:3px solid var(--amber)}
-.photo-edit-btn{position:absolute;bottom:4px;right:4px;background:var(--amber);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.8rem;display:none;align-items:center;justify-content:center}
-.admin-mode .photo-edit-btn{display:flex}
-.card-name{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);margin-bottom:.25rem}
-.card-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
-.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;border-top:1px solid var(--border);padding-top:1.25rem}
-.stat-n{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--amber)}
-.stat-l{font-size:.7rem;color:var(--muted);margin-top:.15rem}
-.s-tag{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:.6rem}
-.s-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--cream);margin-bottom:.75rem;line-height:1.2}
-.s-sub{color:var(--muted);font-size:.95rem;max-width:540px;line-height:1.7;margin-bottom:2.5rem}
-.btn{padding:.7rem 1.6rem;border-radius:2rem;font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;border:none;font-family:'Outfit',sans-serif;display:inline-flex;align-items:center;gap:.5rem}
-.btn-amber{background:var(--amber);color:#000}
-.btn-amber:hover{background:var(--amber2)}
-.btn-outline{background:transparent;border:1.5px solid var(--amber);color:var(--amber)}
-.btn-outline:hover{background:var(--amber);color:#000}
-.btn-sm{padding:.4rem 1rem;font-size:.78rem}
-.btn-danger{background:var(--red);color:#fff}
-.btn-danger:hover{background:#e05550}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
-#admin-bar{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;display:none;flex-direction:column;align-items:flex-end;gap:.6rem}
-.admin-mode #admin-bar{display:flex}
-.admin-tip{background:var(--amber);color:#000;font-size:.72rem;font-weight:600;padding:.35rem .85rem;border-radius:2rem;white-space:nowrap}
-.about-grid{display:grid;grid-template-columns:300px 1fr;gap:3rem;align-items:start}
-.about-photo-section{position:sticky;top:7rem}
-.about-photo-big{width:100%;aspect-ratio:1;border-radius:1.25rem;object-fit:cover;border:2px solid var(--border);display:block}
-.about-photo-ph{width:100%;aspect-ratio:1;border-radius:1.25rem;background:linear-gradient(135deg,var(--card),var(--border));display:flex;align-items:center;justify-content:center;font-size:5rem}
-.about-edit-photo-btn{display:none;width:100%;margin-top:.75rem}
-.admin-mode .about-edit-photo-btn{display:flex}
-.tags-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem}
-.interest-tag{background:var(--border);color:var(--amber);padding:.3rem .85rem;border-radius:2rem;font-size:.78rem;font-weight:500}
-.about-content-text{line-height:1.85;font-size:1rem;color:var(--text);opacity:.9;white-space:pre-wrap}
-.admin-mode .edit-btn-row{display:flex}
-.edit-btn-row{display:none;gap:.75rem;margin-top:1rem}
-textarea.field{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.85rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;resize:vertical;outline:none;transition:border-color .2s}
-textarea.field:focus{border-color:var(--amber)}
-input.field{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;outline:none;transition:border-color .2s}
-input.field:focus{border-color:var(--amber)}
-.research-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-.add-research-btn{display:none}
-.admin-mode .add-research-btn{display:inline-flex}
-.research-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.research-card{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1.75rem;transition:transform .2s,border-color .2s;position:relative}
-.research-card:hover{transform:translateY(-3px);border-color:var(--amber)}
-.rc-year{font-size:.72rem;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-bottom:.5rem}
-.rc-type{display:inline-block;background:var(--border);color:var(--muted);font-size:.7rem;padding:.2rem .65rem;border-radius:2rem;margin-bottom:.75rem;font-weight:500}
-.rc-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:.6rem;line-height:1.4}
-.rc-desc{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
-.rc-journal{font-size:.78rem;color:var(--blue)}
-.rc-actions{display:none;position:absolute;top:1rem;right:1rem;gap:.4rem}
-.admin-mode .rc-actions{display:flex}
-.notes-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-.add-course-btn{display:none}
-.admin-mode .add-course-btn{display:inline-flex}
-.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.course-tile{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;padding:1.5rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.course-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--amber)}
-.course-tile:hover{border-color:var(--amber);transform:translateY(-2px)}
-.ct-code{font-size:.7rem;color:var(--amber);font-weight:700;letter-spacing:.1em;margin-bottom:.4rem}
-.ct-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:.4rem}
-.ct-count{font-size:.78rem;color:var(--muted)}
-.ct-actions{display:none;position:absolute;top:.75rem;right:.75rem;gap:.4rem}
-.admin-mode .ct-actions{display:flex}
-#course-detail{display:none}
-.back-btn{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.85rem;cursor:pointer;margin-bottom:2rem;transition:color .2s;background:none;border:none;font-family:'Outfit',sans-serif}
-.back-btn:hover{color:var(--amber)}
-.course-detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
-.add-topic-btn{display:none}
-.admin-mode .add-topic-btn{display:inline-flex}
-.topic-section{background:var(--card);border:1px solid var(--border);border-radius:1.25rem;margin-bottom:1.25rem;overflow:hidden}
-.topic-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;cursor:pointer;transition:background .2s}
-.topic-header:hover{background:rgba(232,160,64,.04)}
-.topic-title-row{display:flex;align-items:center;gap:.75rem}
-.topic-icon{color:var(--amber);font-size:1rem}
-.topic-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream)}
-.topic-count{font-size:.75rem;color:var(--muted);background:var(--border);padding:.2rem .6rem;border-radius:2rem}
-.topic-chevron{color:var(--muted);transition:transform .3s;font-size:.9rem}
-.topic-section.open .topic-chevron{transform:rotate(180deg)}
-.topic-body{display:none;padding:0 1.5rem 1.5rem;border-top:1px solid var(--border)}
-.topic-section.open .topic-body{display:block}
-.notes-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
-.note-item{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:.75rem;padding:.85rem 1.1rem;transition:border-color .2s}
-.note-item:hover{border-color:var(--amber)}
-.note-item-left{display:flex;align-items:center;gap:.75rem}
-.note-file-icon{font-size:1.2rem}
-.note-file-name{font-size:.88rem;color:var(--text);font-weight:500}
-.note-file-size{font-size:.73rem;color:var(--muted);margin-top:.1rem}
-.note-item-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.note-preview-btn{background:transparent;border:1px solid var(--blue);color:var(--blue);padding:.4rem .9rem;border-radius:2rem;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s}
-.note-preview-btn:hover{background:var(--blue);color:#fff}
-.note-download-btn{background:var(--border);border:none;color:var(--amber);padding:.4rem .9rem;border-radius:2rem;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s}
-.note-download-btn:hover{background:var(--amber);color:#000}
-.note-delete-btn{display:none;background:transparent;border:1px solid var(--red);color:var(--red);padding:.35rem .75rem;border-radius:2rem;font-size:.73rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
-.note-delete-btn:hover{background:var(--red);color:#fff}
-.admin-mode .note-delete-btn{display:inline-block}
-.topic-admin-row{display:none;margin-top:1rem;padding-top:1rem;border-top:1px dashed var(--border);gap:.75rem;align-items:center;flex-wrap:wrap}
-.admin-mode .topic-admin-row{display:flex}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
-.contact-card{background:var(--card);border:1px solid var(--border);border-radius:1rem;padding:1.4rem;display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
-.ci-icon{font-size:1.4rem;flex-shrink:0}
-.ci-label{font-size:.7rem;color:var(--muted);margin-bottom:.2rem}
-.ci-val{font-size:.92rem;color:var(--cream);font-weight:500}
-.contact-form-wrap{display:flex;flex-direction:column;gap:1rem}
-.form-label{font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:.3rem;letter-spacing:.04em}
-.contact-form-wrap input,.contact-form-wrap textarea{background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.8rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;width:100%;outline:none;transition:border-color .2s}
-.contact-form-wrap input:focus,.contact-form-wrap textarea:focus{border-color:var(--amber)}
-.contact-form-wrap textarea{resize:vertical;min-height:120px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:1.5rem}
-.modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:1.5rem;padding:2.5rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto}
-.modal h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cream);margin-bottom:1.5rem}
-.modal-field{margin-bottom:1.1rem}
-.modal-field label{display:block;font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:.4rem;letter-spacing:.04em}
-.modal-actions{display:flex;gap:.75rem;margin-top:1.75rem;justify-content:flex-end}
-.file-upload-area{border:2px dashed var(--border);border-radius:.75rem;padding:2rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
-.file-upload-area:hover{border-color:var(--amber)}
-.file-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.file-upload-area p{color:var(--muted);font-size:.85rem;pointer-events:none}
-.file-selected{font-size:.8rem;color:var(--green);margin-top:.5rem}
-#login-modal .modal{max-width:400px}
-.login-logo{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--amber);text-align:center;margin-bottom:.5rem;font-style:italic}
-.login-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:2rem}
-#login-error{color:var(--red);font-size:.82rem;margin-top:.5rem;display:none}
-#toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:.75rem 1.75rem;border-radius:2rem;font-size:.85rem;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:600;white-space:nowrap}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
-.empty-state .empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.5}
-@media(max-width:900px){
-  .hero-wrap,.about-grid,.research-grid,.contact-grid{grid-template-columns:1fr}
-  .courses-grid{grid-template-columns:1fr 1fr}
-  nav{padding:.9rem 1.25rem}
-  .container{padding:0 1.25rem}
-}
-@media(max-width:600px){
-  .courses-grid,.research-grid{grid-template-columns:1fr}
-  .nav-links{display:none}
-}
-</style>
-</head>
-<body>
- 
-<nav>
-  <div class="nav-logo">∫ Prof. Portal</div>
-  <ul class="nav-links">
-    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
-    <li><a onclick="showPage('about')" id="nav-about">About</a></li>
-    <li><a onclick="showPage('research')" id="nav-research">Research</a></li>
-    <li><a onclick="showPage('notes')" id="nav-notes">Notes</a></li>
-    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
-  </ul>
-  <div class="nav-right">
-    <button id="theme-btn" onclick="toggleTheme()" style="background:transparent;border:none;color:var(--amber);cursor:pointer;font-size:1.2rem;margin-right:0.5rem;" title="Toggle Theme">🌓</button>
-    <span id="admin-badge">⚡ Admin Mode</span>
-    <button id="login-btn" onclick="openLoginModal()">Admin Login</button>
-  </div>
-</nav>
- 
-<div id="admin-bar">
-  <div class="admin-tip">✏️ Admin Mode — You can edit everything</div>
-  <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
-</div>
- 
-<!-- HOME -->
-<div class="page active" id="page-home">
-  <div class="container">
-    <div class="hero-wrap">
-      <div>
-        <div class="hero-tag">Department of Mathematics</div>
-        <h1 class="hero-name"><em id="hero-firstname">Alan</em><br><span id="hero-lastname">Carter</span></h1>
-        <p class="hero-dept" id="hero-title-display">Associate Professor · University of Westbridge</p>
-        <p class="hero-bio-text" id="hero-short-bio">Passionate about making mathematics beautiful, accessible, and alive. My door is always open.</p>
-        <div class="hero-btns">
-          <button class="btn btn-amber" onclick="showPage('about')">About Me</button>
-          <button class="btn btn-outline" onclick="showPage('notes')">Course Notes</button>
-        </div>
-      </div>
-      <div class="prof-card">
-        <div class="prof-photo-wrap">
-          <div class="prof-photo-placeholder" id="home-photo-ph">👨‍🏫</div>
-          <img id="home-photo-img" class="prof-photo" style="display:none" src="" alt="Professor"/>
-          <button class="photo-edit-btn" onclick="document.getElementById('photo-upload-home').click()">📷</button>
-          <input type="file" id="photo-upload-home" accept="image/*" style="display:none" onchange="handlePhotoUpload(this,'home')"/>
-        </div>
-        <div class="card-name" id="card-fullname">Dr. Alan Carter</div>
-        <div class="card-sub" id="card-email">alan.carter@westbridge.edu</div>
-        <div class="card-stats">
-          <div><div class="stat-n" id="stat-years">14</div><div class="stat-l">Yrs Teaching</div></div>
-          <div><div class="stat-n" id="stat-pubs">0</div><div class="stat-l">Publications</div></div>
-          <div><div class="stat-n" id="stat-courses">0</div><div class="stat-l">Courses</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- ABOUT -->
-<div class="page" id="page-about">
-  <div class="container">
-    <div style="margin-bottom:2.5rem">
-      <div class="s-tag">About Me</div>
-      <h2 class="s-title">The mathematician<br>behind the board</h2>
-    </div>
-    <div class="about-grid">
-      <div class="about-photo-section">
-        <div id="about-photo-ph" class="about-photo-ph">👨‍🏫</div>
-        <img id="about-photo-img" class="about-photo-big" style="display:none" src="" alt="Professor"/>
-        <button class="btn btn-outline btn-sm about-edit-photo-btn" onclick="document.getElementById('photo-upload-about').click()">📷 Change Photo</button>
-        <input type="file" id="photo-upload-about" accept="image/*" style="display:none" onchange="handlePhotoUpload(this,'about')"/>
-        <div class="tags-wrap" id="interests-wrap"></div>
-        <div style="margin-top:1rem;display:none" id="interests-admin-row">
-          <button class="btn btn-ghost btn-sm" onclick="openInterestModal()">+ Add Interest Tag</button>
-        </div>
-      </div>
-      <div>
-        <div id="about-view-mode">
-          <div id="about-content-display" class="about-content-text" style="min-height:200px;color:var(--muted);font-style:italic">No bio added yet. Admin can click Edit to add one.</div>
-          <div class="edit-btn-row">
-            <button class="btn btn-outline btn-sm" onclick="toggleAboutEdit(true)">✏️ Edit Bio</button>
-          </div>
-        </div>
-        <div id="about-edit-mode" style="display:none">
-          <div class="modal-field"><label>Full Name</label><input class="field" id="edit-fullname" placeholder="Dr. Alan Carter"/></div>
-          <div class="modal-field"><label>Title / Position</label><input class="field" id="edit-title" placeholder="Associate Professor · University of Westbridge"/></div>
-          <div class="modal-field"><label>Email</label><input class="field" id="edit-email" placeholder="alan@university.edu"/></div>
-          <div class="modal-field"><label>Short Bio (shown on homepage)</label><textarea class="field" id="edit-short-bio" rows="2" placeholder="A one-liner about you..."></textarea></div>
-          <div class="modal-field"><label>Full Bio</label><textarea class="field" id="edit-full-bio" rows="8" placeholder="Write your full biography here..."></textarea></div>
-          <div class="modal-field"><label>Years of Teaching</label><input class="field" id="edit-years" type="number" placeholder="14"/></div>
-          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-            <button class="btn btn-amber" onclick="saveAbout()">💾 Save Changes</button>
-            <button class="btn btn-ghost" onclick="toggleAboutEdit(false)">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- RESEARCH -->
-<div class="page" id="page-research">
-  <div class="container">
-    <div class="research-header">
-      <div>
-        <div class="s-tag">Research</div>
-        <h2 class="s-title">Publications & Projects</h2>
-        <p class="s-sub" style="margin-bottom:0">Exploring the frontiers of mathematics through rigorous research.</p>
-      </div>
-      <button class="btn btn-amber add-research-btn" onclick="openResearchModal()">+ Add Publication</button>
-    </div>
-    <div class="research-grid" id="research-grid">
-      <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>
-    </div>
-  </div>
-</div>
- 
-<!-- NOTES -->
-<div class="page" id="page-notes">
-  <div class="container">
-    <div id="courses-list-view">
-      <div class="notes-header">
-        <div>
-          <div class="s-tag">Course Notes</div>
-          <h2 class="s-title">Materials & Resources</h2>
-          <p class="s-sub" style="margin-bottom:0">Select a course to access lecture notes, problem sets, and more.</p>
-        </div>
-        <button class="btn btn-amber add-course-btn" onclick="openAddCourseModal()">+ Add Course</button>
-      </div>
-      <div class="courses-grid" id="courses-grid">
-        <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>No courses added yet.</p></div>
-      </div>
-    </div>
-    <div id="course-detail">
-      <button class="back-btn" onclick="backToCourses()">← Back to Courses</button>
-      <div class="course-detail-header">
-        <div>
-          <div class="s-tag" id="detail-course-code">MATH 101</div>
-          <h2 class="s-title" id="detail-course-name">Calculus I</h2>
-        </div>
-        <button class="btn btn-amber add-topic-btn" onclick="openAddTopicModal()">+ Add Topic</button>
-      </div>
-      <div id="topics-list"></div>
-    </div>
-  </div>
-</div>
- 
-<!-- CONTACT -->
-<div class="page" id="page-contact">
-  <div class="container">
-    <div style="margin-bottom:2.5rem">
-      <div class="s-tag">Contact</div>
-      <h2 class="s-title">Let's Talk Math</h2>
-      <p class="s-sub">Questions, office hours, research inquiries — my inbox is open.</p>
-    </div>
-    <div class="contact-grid">
-      <div>
-        <div class="contact-card"><div class="ci-icon">📍</div><div><div class="ci-label">Office</div><div class="ci-val" id="c-office">Math Building, Room 214</div></div></div>
-        <div class="contact-card"><div class="ci-icon">🕐</div><div><div class="ci-label">Office Hours</div><div class="ci-val" id="c-hours">Mon & Wed 2–4 PM · Fri 10 AM–12 PM</div></div></div>
-        <div class="contact-card"><div class="ci-icon">✉️</div><div><div class="ci-label">Email</div><div class="ci-val" id="c-email-display">alan.carter@westbridge.edu</div></div></div>
-        <div class="contact-card"><div class="ci-icon">🏛️</div><div><div class="ci-label">University</div><div class="ci-val">University of Westbridge</div></div></div>
-      </div>
-      <div class="contact-form-wrap">
-        <div><div class="form-label">Your Name</div><input type="text" placeholder="Jane Smith"/></div>
-        <div><div class="form-label">Email</div><input type="email" placeholder="jane@student.edu"/></div>
-        <div><div class="form-label">Subject</div><input type="text" placeholder="Question about..."/></div>
-        <div><div class="form-label">Message</div><textarea placeholder="Hi Professor, I had a question about..."></textarea></div>
-        <button class="btn btn-amber" style="width:100%;justify-content:center" onclick="showToast('Message sent! ✉️')">Send Message</button>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- MODALS -->
-<div class="modal-overlay" id="login-modal">
-  <div class="modal">
-    <div class="login-logo">∫ Admin Login</div>
-    <div class="login-sub">Enter the admin password to enable editing</div>
-    <div class="modal-field">
-      <label>Password</label>
-      <input class="field" type="password" id="login-pw" placeholder="Enter password..." onkeydown="if(event.key==='Enter')doLogin()"/>
-      <div id="login-error">Incorrect password. Try: <strong>admin123</strong></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('login-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="doLogin()">Login</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="password-modal">
-  <div class="modal" style="max-width:400px">
-    <h3>Set a Custom Password?</h3>
-    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.5">You just logged in with the default password. Would you like to set a safer, custom password for your admin portal?</p>
-    <div class="modal-field">
-      <label>New Password</label>
-      <input class="field" type="password" id="new-pw" placeholder="Enter new password..."/>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closePasswordModal()">Skip for now</button>
-      <button class="btn btn-amber" onclick="changePassword()">Save Password</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="research-modal">
-  <div class="modal">
-    <h3 id="research-modal-title">Add Publication / Project</h3>
-    <div class="modal-field"><label>Title</label><input class="field" id="r-title" placeholder="Publication or project title..."/></div>
-    <div class="modal-field"><label>Type</label>
-      <select class="field" id="r-type" style="background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;width:100%">
-        <option>Journal Paper</option><option>Conference Paper</option><option>Book Chapter</option><option>Project</option><option>Thesis</option>
-      </select>
-    </div>
-    <div class="modal-field"><label>Year</label><input class="field" id="r-year" placeholder="2024"/></div>
-    <div class="modal-field"><label>Journal / Venue</label><input class="field" id="r-journal" placeholder="Journal of Mathematics..."/></div>
-    <div class="modal-field"><label>Co-authors</label><input class="field" id="r-authors" placeholder="with J. Smith, A. Doe..."/></div>
-    <div class="modal-field"><label>Description</label><textarea class="field" id="r-desc" rows="3" placeholder="Brief summary of the work..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('research-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="saveResearch()">Save</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="course-modal">
-  <div class="modal">
-    <h3>Add Course</h3>
-    <div class="modal-field"><label>Course Code</label><input class="field" id="c-code" placeholder="MATH 101"/></div>
-    <div class="modal-field"><label>Course Name</label><input class="field" id="c-name" placeholder="Calculus I"/></div>
-    <div class="modal-field"><label>Description</label><textarea class="field" id="c-desc" rows="3" placeholder="Brief description..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('course-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="saveCourse()">Create Course</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="topic-modal">
-  <div class="modal">
-    <h3>Add Topic / Subtopic</h3>
-    <div class="modal-field"><label>Topic Name</label><input class="field" id="t-name" placeholder="Chapter 1: Limits and Continuity"/></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('topic-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="saveTopic()">Add Topic</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="note-modal">
-  <div class="modal">
-    <h3>Upload Notes</h3>
-    <div class="modal-field"><label>Note Title</label><input class="field" id="n-title" placeholder="Lecture 1 Notes / Problem Set 2..."/></div>
-    <div class="modal-field">
-      <label>Upload File (PDF, image, doc, etc.)</label>
-      <div class="file-upload-area">
-        <input type="file" id="n-file" onchange="updateFileLabel()"/>
-        <p>📎 Click or drag a file here</p>
-      </div>
-      <div class="file-selected" id="file-label"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('note-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="saveNote()">Upload</button>
-    </div>
-  </div>
-</div>
- 
-<div class="modal-overlay" id="interest-modal">
-  <div class="modal">
-    <h3>Add Interest Tag</h3>
-    <div class="modal-field"><label>Tag</label><input class="field" id="interest-input" placeholder="e.g. Topology, PDEs, Number Theory..."/></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('interest-modal')">Cancel</button>
-      <button class="btn btn-amber" onclick="saveInterest()">Add Tag</button>
-    </div>
-  </div>
-</div>
- 
-<div id="toast">✓ Saved!</div>
- 
-<script>
-var ADMIN_PASSWORD = 'admin123';
-var isAdmin = false;
- 
-var defaultState = {
-  profile: {
-    fullname: 'Dr. Alan Carter', firstname: 'Alan', lastname: 'Carter',
-    title: 'Associate Professor · University of Westbridge',
-    email: 'alan.carter@westbridge.edu',
-    shortBio: 'Passionate about making mathematics beautiful, accessible, and alive. My door is always open.',
-    fullBio: '', years: '14', photo: null,
-    interests: ['PDEs', 'Topology', 'Fluid Dynamics'],
-    office: 'Math Building, Room 214', hours: 'Mon & Wed 2–4 PM · Fri 10 AM–12 PM'
-  },
-  research: [], courses: []
-};
- 
-var API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-  ? 'http://localhost:3000/api' 
-  : window.location.origin + '/api';
-var state = JSON.parse(JSON.stringify(defaultState));
-
-// Load State from Backend
-async function loadState() {
-  try {
-    const res = await fetch(API_URL + '/state');
-    if (res.ok) {
-      const data = await res.json();
-      state = data;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Prof. Portal — Mathematics</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
     }
-  } catch (e) {
-    console.error('Failed to load state from backend:', e);
-  }
-}
 
-// Save State to Backend
-async function saveState() {
-  try {
-    await fetch(API_URL + '/state', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(state)
-    });
-  } catch (e) {
-    showToast('Failed to save to server');
-  }
-}
+    :root {
+      --bg: #0b0f1a;
+      --bg-gradient: radial-gradient(circle, #0b0f1a, #000);
+      --surface: #151a28;
+      --card: #151a28;
+      --border: rgba(255, 255, 255, 0.1);
+      --amber: #f5b942;
+      --amber2: #c9a96e;
+      --cream: #ffffff;
+      --muted: #b8c1ec;
+      --text: #f5f5f5;
+      --green: #5a9e72;
+      --red: #ff5252;
+      --blue: #4da6ff;
+    }
 
-// Ensure init waits for State Load
-async function boot() {
-  await loadState();
-  init();
-}
-boot();
- 
-// PAGE NAV
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelectorAll('.nav-links a').forEach(function(a){ a.classList.remove('active'); });
-  document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'notes') renderCourses();
-  if (name === 'research') renderResearch();
-  if (name === 'about') renderAbout();
-}
- 
-// ADMIN AUTH
-var ADMIN_PASSWORD = ''; // Removed hardcoded password
+    [data-theme="light"] {
+      --bg: #f7f8fc;
+      --bg-gradient: linear-gradient(120deg, rgba(255, 255, 255, 0.9), rgba(240, 245, 255, 0.9));
+      --surface: #ffffff;
+      --card: rgba(255, 255, 255, 0.7);
+      --border: rgba(0, 0, 0, 0.05);
+      --amber: #d4a017;
+      --amber2: #d4a017;
+      --cream: #1a1a1a;
+      --muted: #444444;
+      --text: #666666;
+      --green: #4a825e;
+      --red: #ad423d;
+      --blue: #2f80ed;
+    }
 
-function openLoginModal() { document.getElementById('login-pw').value = ''; document.getElementById('login-error').style.display='none'; openModal('login-modal'); }
+    html {
+      scroll-behavior: smooth
+    }
 
-async function doLogin() {
-  var pw = document.getElementById('login-pw').value;
-  try {
-    const res = await fetch(API_URL + '/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw })
-    });
-    const data = await res.json();
-    
-    if (data.success) {
-      ADMIN_PASSWORD = pw; // Temporary session storage
-      isAdmin = true;
-      document.body.classList.add('admin-mode');
-      document.getElementById('admin-badge').style.display = 'inline-block';
-      document.getElementById('login-btn').textContent = 'Admin ✓';
-      document.getElementById('login-btn').style.background = 'var(--amber)';
-      document.getElementById('login-btn').style.color = '#000';
-      document.getElementById('login-btn').onclick = null;
-      document.getElementById('interests-admin-row').style.display = 'flex';
-      closeModal('login-modal');
-      
-      if (data.isDefault) {
-        openModal('password-modal');
-      } else {
-        showToast('Welcome back, Professor! ✨');
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    .blue-glow {
+      color: var(--blue) !important;
+      text-shadow: 0 0 8px #007bff;
+    }
+
+    [data-theme="light"] .blue-glow {
+      text-shadow: none;
+      font-weight: 500;
+      color: #2f80ed !important;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: rgba(15, 14, 12, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 2.5rem
+    }
+
+    [data-theme="light"] nav {
+      background: rgba(250, 249, 247, 0.92)
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--amber);
+      font-style: italic
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      list-style: none
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: .875rem;
+      font-weight: 500;
+      transition: color .2s;
+      cursor: pointer
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--amber)
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
+
+    #admin-badge {
+      background: var(--amber);
+      color: #000;
+      font-size: .7rem;
+      font-weight: 600;
+      padding: .25rem .7rem;
+      border-radius: 2rem;
+      display: none
+    }
+
+    #login-btn {
+      background: transparent;
+      border: 1.5px solid var(--amber);
+      color: var(--amber);
+      padding: .4rem 1.1rem;
+      border-radius: 2rem;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'Outfit', sans-serif
+    }
+
+    #login-btn:hover {
+      background: var(--amber);
+      color: #000
+    }
+
+    .page {
+      display: none;
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      padding: 6rem 0 4rem
+    }
+
+    .page.active {
+      display: block
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem
+    }
+
+    #page-home {
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232, 160, 64, .08) 0%, transparent 60%)
+    }
+
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      min-height: calc(100vh - 6rem);
+      padding: 2rem 0
+    }
+
+    .hero-tag {
+      display: inline-block;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .3rem .9rem;
+      border-radius: 2rem;
+      margin-bottom: 1.5rem
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4.5vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: .5rem;
+      white-space: nowrap;
+      padding: 0 0.1em;
+      /* Extends clipping box to prevent italic letters from cutting off */
+      background: linear-gradient(90deg, #ffffff, #4da6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 3s ease-in-out infinite alternate;
+      /* Fallback for glow on transparent text */
+      filter: drop-shadow(0 0 10px rgba(0, 123, 255, 0.4));
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 10px #00f);
       }
-    } else {
-      document.getElementById('login-error').style.display = 'block';
-      document.getElementById('login-error').innerHTML = 'Incorrect password.';
+
+      to {
+        filter: drop-shadow(0 0 20px #4da6ff);
+      }
     }
-  } catch(e) {
-    showToast('Login server error');
-  }
-}
 
-function closePasswordModal() {
-  closeModal('password-modal');
-  showToast('Welcome back, Professor! ✨ (Using default password)');
-}
-
-async function changePassword() {
-  var newPw = document.getElementById('new-pw').value.trim();
-  if (!newPw) return showToast('Please enter a password');
-  
-  try {
-    const res = await fetch(API_URL + '/change-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ newPassword: newPw })
-    });
-    if (res.ok) {
-      ADMIN_PASSWORD = newPw;
-      closeModal('password-modal');
-      showToast('Password successfully changed! 🔒');
+    [data-theme="light"] .hero-name {
+      background: linear-gradient(90deg, #1a1a1a, #2f80ed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      animation: none;
+      filter: none;
     }
-  } catch(e) {
-    showToast('Failed to change password');
-  }
-}
-function logout() {
-  isAdmin = false;
-  document.body.classList.remove('admin-mode');
-  document.getElementById('admin-badge').style.display = 'none';
-  document.getElementById('login-btn').textContent = 'Admin Login';
-  document.getElementById('login-btn').style.background = '';
-  document.getElementById('login-btn').style.color = '';
-  document.getElementById('login-btn').onclick = openLoginModal;
-  document.getElementById('interests-admin-row').style.display = 'none';
-  showToast('Logged out');
-}
- 
-// MODALS
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(function(m) {
-  m.addEventListener('click', function(e) { if (e.target === m) m.classList.remove('open'); });
-});
- 
-// PHOTO UPLOAD
-async function handlePhotoUpload(input, target) {
-  var file = input.files[0];
-  if (!file) return;
 
-  var formData = new FormData();
-  formData.append('file', file);
-
-  try {
-    const res = await fetch(API_URL + '/upload', {
-      method: 'POST',
-      body: formData
-    });
-    const data = await res.json();
-    
-    if (data.success) {
-      state.profile.photo = data.fileUrl; // Save image URL rather than Base64
-      await saveState();
-      applyPhoto();
-      showToast('Photo uploaded to server!');
+    .hero-name em {
+      font-style: italic
     }
-  } catch (err) {
-    showToast('Failed to upload photo');
-  }
-}
-function applyPhoto() {
-  var src = state.profile.photo;
-  ['home','about'].forEach(function(t) {
-    var ph = document.getElementById(t + '-photo-ph');
-    var img = document.getElementById(t + '-photo-img');
-    if (src) { ph.style.display = 'none'; img.src = src; img.style.display = 'block'; }
-    else { ph.style.display = 'flex'; img.style.display = 'none'; }
-  });
-}
- 
-// ABOUT
-function renderAbout() {
-  var p = state.profile;
-  var el = document.getElementById('about-content-display');
-  el.textContent = p.fullBio || 'No bio added yet. Admin can click Edit to add one.';
-  el.style.fontStyle = p.fullBio ? 'normal' : 'italic';
-  el.style.color = p.fullBio ? 'var(--text)' : 'var(--muted)';
-  renderInterests();
-  applyPhoto();
-}
-function toggleAboutEdit(on) {
-  document.getElementById('about-view-mode').style.display = on ? 'none' : 'block';
-  document.getElementById('about-edit-mode').style.display = on ? 'block' : 'none';
-  if (on) {
-    var p = state.profile;
-    document.getElementById('edit-fullname').value = p.fullname;
-    document.getElementById('edit-title').value = p.title;
-    document.getElementById('edit-email').value = p.email;
-    document.getElementById('edit-short-bio').value = p.shortBio;
-    document.getElementById('edit-full-bio').value = p.fullBio;
-    document.getElementById('edit-years').value = p.years;
-  }
-}
-function saveAbout() {
-  var p = state.profile;
-  p.fullname = document.getElementById('edit-fullname').value || p.fullname;
-  p.title = document.getElementById('edit-title').value || p.title;
-  p.email = document.getElementById('edit-email').value || p.email;
-  p.shortBio = document.getElementById('edit-short-bio').value || p.shortBio;
-  p.fullBio = document.getElementById('edit-full-bio').value;
-  p.years = document.getElementById('edit-years').value || p.years;
-  var parts = p.fullname.replace(/^Dr\.?\s*/i,'').trim().split(' ');
-  p.firstname = parts[0] || 'Alan';
-  p.lastname = parts.slice(1).join(' ') || 'Carter';
-  saveState();
-  applyProfileToUI();
-  toggleAboutEdit(false);
-  renderAbout();
-  showToast('Bio saved!');
-}
-function applyProfileToUI() {
-  var p = state.profile;
-  document.getElementById('hero-firstname').textContent = p.firstname;
-  document.getElementById('hero-lastname').textContent = p.lastname;
-  document.getElementById('hero-title-display').textContent = p.title;
-  document.getElementById('hero-short-bio').textContent = p.shortBio;
-  document.getElementById('card-fullname').textContent = p.fullname;
-  document.getElementById('card-email').textContent = p.email;
-  document.getElementById('stat-years').textContent = p.years;
-  document.getElementById('c-email-display').textContent = p.email;
-}
- 
-// INTERESTS
-function renderInterests() {
-  var wrap = document.getElementById('interests-wrap');
-  wrap.innerHTML = '';
-  (state.profile.interests || []).forEach(function(tag, i) {
-    var el = document.createElement('div');
-    el.className = 'interest-tag';
-    el.style.cursor = isAdmin ? 'pointer' : 'default';
-    el.innerHTML = tag + (isAdmin ? ' <span style="color:var(--red);margin-left:.3rem" title="Remove">×</span>' : '');
-    if (isAdmin) {
-      (function(idx){ el.querySelector('span').onclick = function(){ removeInterest(idx); }; })(i);
+
+    .hero-dept {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem
     }
-    wrap.appendChild(el);
-  });
-}
-function openInterestModal() { openModal('interest-modal'); }
-function saveInterest() {
-  var val = document.getElementById('interest-input').value.trim();
-  if (!val) return;
-  state.profile.interests.push(val);
-  saveState(); renderInterests();
-  document.getElementById('interest-input').value = '';
-  closeModal('interest-modal');
-  showToast('Tag added!');
-}
-function removeInterest(i) {
-  state.profile.interests.splice(i, 1);
-  saveState(); renderInterests();
-}
- 
-// RESEARCH
-var editingResearchId = null;
-function openResearchModal(id) {
-  editingResearchId = id || null;
-  var r = id ? state.research.find(function(x){ return x.id === id; }) : null;
-  document.getElementById('research-modal-title').textContent = r ? 'Edit Publication' : 'Add Publication / Project';
-  document.getElementById('r-title').value = r ? r.title : '';
-  document.getElementById('r-type').value = r ? r.type : 'Journal Paper';
-  document.getElementById('r-year').value = r ? r.year : new Date().getFullYear();
-  document.getElementById('r-journal').value = r ? r.journal : '';
-  document.getElementById('r-authors').value = r ? r.authors : '';
-  document.getElementById('r-desc').value = r ? r.desc : '';
-  openModal('research-modal');
-}
-function saveResearch() {
-  var title = document.getElementById('r-title').value.trim();
-  if (!title) return showToast('Please enter a title');
-  var item = {
-    id: editingResearchId || Date.now().toString(),
-    title: title, type: document.getElementById('r-type').value,
-    year: document.getElementById('r-year').value,
-    journal: document.getElementById('r-journal').value,
-    authors: document.getElementById('r-authors').value,
-    desc: document.getElementById('r-desc').value
-  };
-  if (editingResearchId) {
-    var idx = state.research.findIndex(function(x){ return x.id === editingResearchId; });
-    state.research[idx] = item;
-  } else { state.research.unshift(item); }
-  saveState(); updateStats(); renderResearch();
-  closeModal('research-modal');
-  showToast(editingResearchId ? 'Publication updated!' : 'Publication added!');
-}
-function deleteResearch(id) {
-  if (!confirm('Delete this publication?')) return;
-  state.research = state.research.filter(function(x){ return x.id !== id; });
-  saveState(); updateStats(); renderResearch();
-  showToast('Deleted');
-}
-function renderResearch() {
-  var grid = document.getElementById('research-grid');
-  if (!state.research.length) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>';
-    return;
-  }
-  grid.innerHTML = state.research.map(function(r) {
-    return '<div class="research-card">'
-      + '<div class="rc-year">' + r.year + '</div>'
-      + '<div class="rc-type">' + r.type + '</div>'
-      + '<div class="rc-title">' + r.title + '</div>'
-      + '<div class="rc-desc">' + r.desc + '</div>'
-      + '<div class="rc-journal">' + r.journal + (r.authors ? ' · ' + r.authors : '') + '</div>'
-      + '<div class="rc-actions">'
-      + '<button class="btn btn-ghost btn-sm" onclick="openResearchModal(\'' + r.id + '\')">✏️</button>'
-      + '<button class="btn btn-danger btn-sm" onclick="deleteResearch(\'' + r.id + '\')">🗑</button>'
-      + '</div></div>';
-  }).join('');
-}
- 
-// COURSES
-var currentCourseId = null;
-function openAddCourseModal() {
-  document.getElementById('c-code').value = '';
-  document.getElementById('c-name').value = '';
-  document.getElementById('c-desc').value = '';
-  openModal('course-modal');
-}
-function saveCourse() {
-  var code = document.getElementById('c-code').value.trim();
-  var name = document.getElementById('c-name').value.trim();
-  if (!code || !name) return showToast('Enter code and name');
-  state.courses.push({ id: Date.now().toString(), code: code, name: name, desc: document.getElementById('c-desc').value, topics: [] });
-  saveState(); updateStats(); renderCourses();
-  closeModal('course-modal');
-  showToast('Course created!');
-}
-function deleteCourse(id) {
-  if (!confirm('Delete this course and all its notes?')) return;
-  state.courses = state.courses.filter(function(x){ return x.id !== id; });
-  saveState(); updateStats(); renderCourses();
-  showToast('Course deleted');
-}
-function renderCourses() {
-  var grid = document.getElementById('courses-grid');
-  if (!state.courses.length) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>No courses added yet.</p></div>';
-    return;
-  }
-  grid.innerHTML = state.courses.map(function(c) {
-    var noteCount = c.topics.reduce(function(a,t){ return a + t.notes.length; }, 0);
-    return '<div class="course-tile" onclick="openCourse(\'' + c.id + '\')">'
-      + '<div class="ct-actions" onclick="event.stopPropagation()">'
-      + '<button class="btn btn-danger btn-sm" onclick="deleteCourse(\'' + c.id + '\')">🗑</button>'
-      + '</div>'
-      + '<div class="ct-code">' + c.code + '</div>'
-      + '<div class="ct-name">' + c.name + '</div>'
-      + '<div class="ct-count">' + c.topics.length + ' topic' + (c.topics.length!==1?'s':'') + ' · ' + noteCount + ' file' + (noteCount!==1?'s':'') + '</div>'
-      + '</div>';
-  }).join('');
-}
- 
-// COURSE DETAIL
-function openCourse(id) {
-  currentCourseId = id;
-  var course = state.courses.find(function(c){ return c.id === id; });
-  document.getElementById('detail-course-code').textContent = course.code;
-  document.getElementById('detail-course-name').textContent = course.name;
-  document.getElementById('courses-list-view').style.display = 'none';
-  document.getElementById('course-detail').style.display = 'block';
-  renderTopics();
-}
-function backToCourses() {
-  currentCourseId = null;
-  document.getElementById('courses-list-view').style.display = 'block';
-  document.getElementById('course-detail').style.display = 'none';
-}
-function openAddTopicModal() {
-  document.getElementById('t-name').value = '';
-  openModal('topic-modal');
-}
-function saveTopic() {
-  var name = document.getElementById('t-name').value.trim();
-  if (!name) return showToast('Enter topic name');
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  course.topics.push({ id: Date.now().toString(), name: name, notes: [] });
-  saveState(); renderTopics();
-  closeModal('topic-modal');
-  showToast('Topic added!');
-}
-function deleteTopic(topicId) {
-  if (!confirm('Delete this topic?')) return;
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  course.topics = course.topics.filter(function(t){ return t.id !== topicId; });
-  saveState(); renderTopics();
-  showToast('Topic deleted');
-}
- 
-// ── KEY FIX: renderTopics uses plain string concat, NO nested backticks ──
-function fileIcon(type) {
-  if (!type) return '📄';
-  if (type.indexOf('pdf') !== -1) return '📕';
-  if (type.indexOf('image') !== -1) return '🖼️';
-  if (type.indexOf('word') !== -1 || type.indexOf('doc') !== -1) return '📝';
-  if (type.indexOf('sheet') !== -1 || type.indexOf('excel') !== -1 || type.indexOf('csv') !== -1) return '📊';
-  if (type.indexOf('zip') !== -1 || type.indexOf('rar') !== -1) return '📦';
-  return '📄';
-}
- 
-function buildNoteHTML(t, n) {
-  var isPdf = n.type && n.type.indexOf('pdf') !== -1;
-  var previewBtn = isPdf
-    ? '<button class="note-preview-btn" onclick="previewNote(\'' + t.id + '\',\'' + n.id + '\')">👁 Preview</button>'
-    : '';
-  return '<div class="note-item">'
-    + '<div class="note-item-left">'
-    + '<span class="note-file-icon">' + fileIcon(n.type) + '</span>'
-    + '<div>'
-    + '<div class="note-file-name">' + n.title + '</div>'
-    + '<div class="note-file-size">' + n.filename + ' · ' + n.size + '</div>'
-    + '</div></div>'
-    + '<div class="note-item-right">'
-    + previewBtn
-    + '<button class="note-download-btn" onclick="downloadNote(\'' + t.id + '\',\'' + n.id + '\')">↓ Download</button>'
-    + '<button class="note-delete-btn" onclick="deleteNote(\'' + t.id + '\',\'' + n.id + '\')">🗑 Delete</button>'
-    + '</div></div>';
-}
- 
-function renderTopics() {
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  var list = document.getElementById('topics-list');
-  if (!course.topics.length) {
-    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No topics yet. Add a topic to get started.</p></div>';
-    return;
-  }
-  var html = '';
-  course.topics.forEach(function(t) {
-    var notesHTML = '';
-    if (t.notes.length) {
-      t.notes.forEach(function(n){ notesHTML += buildNoteHTML(t, n); });
-    } else {
-      notesHTML = '<div style="color:var(--muted);font-size:.85rem;padding:.5rem 0">No notes uploaded yet.</div>';
+
+    .hero-bio-text {
+      color: var(--text);
+      line-height: 1.8;
+      max-width: 650px;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      opacity: .85
     }
-    html += '<div class="topic-section" id="topic-' + t.id + '">'
-      + '<div class="topic-header" onclick="toggleTopic(\'' + t.id + '\')">'
-      + '<div class="topic-title-row">'
-      + '<span class="topic-icon">📁</span>'
-      + '<span class="topic-name">' + t.name + '</span>'
-      + '<span class="topic-count">' + t.notes.length + ' file' + (t.notes.length!==1?'s':'') + '</span>'
-      + '</div><span class="topic-chevron">▼</span></div>'
-      + '<div class="topic-body">'
-      + '<div class="notes-list">' + notesHTML + '</div>'
-      + '<div class="topic-admin-row">'
-      + '<button class="btn btn-outline btn-sm" onclick="openNoteModal(\'' + t.id + '\')">+ Upload Notes</button>'
-      + '<button class="btn btn-danger btn-sm" onclick="deleteTopic(\'' + t.id + '\')">🗑 Delete Topic</button>'
-      + '</div></div></div>';
-  });
-  list.innerHTML = html;
-}
- 
-function toggleTopic(id) {
-  document.getElementById('topic-' + id).classList.toggle('open');
-}
- 
-// NOTES
-var currentTopicId = null;
-function openNoteModal(topicId) {
-  currentTopicId = topicId;
-  document.getElementById('n-title').value = '';
-  document.getElementById('n-file').value = '';
-  document.getElementById('file-label').textContent = '';
-  openModal('note-modal');
-}
-function updateFileLabel() {
-  var f = document.getElementById('n-file').files[0];
-  document.getElementById('file-label').textContent = f ? '✓ ' + f.name : '';
-}
-// NOTE UPLOAD
-async function saveNote() {
-  var title = document.getElementById('n-title').value.trim();
-  var file = document.getElementById('n-file').files[0];
-  if (!title) return showToast('Enter a note title');
-  if (!file) return showToast('Please select a file');
 
-  var formData = new FormData();
-  formData.append('file', file);
+    [data-theme="light"] .hero-bio-text {
+      color: #555555;
+    }
 
-  try {
-    showToast('Uploading file...');
-    const res = await fetch(API_URL + '/upload', {
-      method: 'POST',
-      body: formData
-    });
-    const data = await res.json();
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap
+    }
 
-    if (data.success) {
-      var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-      var topic = course.topics.find(function(t){ return t.id === currentTopicId; });
-      topic.notes.push({
-        id: Date.now().toString(),
-        title: title,
-        filename: file.name,
-        size: formatSize(file.size),
-        type: file.type,
-        data: data.fileUrl // Store the URL generated by the backend
+    .prof-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .4)
+    }
+
+    [data-theme="light"] .prof-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .prof-photo-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1.5rem
+    }
+
+    .prof-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--amber);
+      display: block
+    }
+
+    .prof-photo-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--amber2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      border: 3px solid var(--amber)
+    }
+
+    .photo-edit-btn {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: var(--amber);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: .8rem;
+      display: none;
+      align-items: center;
+      justify-content: center
+    }
+
+    .admin-mode .photo-edit-btn {
+      display: flex
+    }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin-bottom: .25rem
+    }
+
+    [data-theme="light"] .card-name {
+      color: #222222;
+    }
+
+    .card-sub {
+      color: var(--amber2);
+      font-size: .85rem;
+      margin-bottom: 1.5rem
+    }
+
+    [data-theme="light"] .card-sub {
+      color: #d4a017;
+    }
+
+    .card-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .75rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem
+    }
+
+    .stat-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--amber)
+    }
+
+    [data-theme="light"] .stat-n {
+      color: #2f80ed;
+    }
+
+    .stat-l {
+      font-size: .7rem;
+      color: var(--muted);
+      margin-top: .15rem
+    }
+
+    .s-tag {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-weight: 600;
+      margin-bottom: .6rem
+    }
+
+    .s-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      color: var(--cream);
+      margin-bottom: .75rem;
+      line-height: 1.2
+    }
+
+    .s-sub {
+      color: var(--muted);
+      font-size: .95rem;
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem
+    }
+
+    .btn {
+      padding: .7rem 1.6rem;
+      border-radius: 2rem;
+      font-size: .875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem
+    }
+
+    .btn-amber {
+      background: linear-gradient(135deg, #f5b942, #d4a017);
+      color: black;
+      border: none;
+      box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+    }
+
+    .btn-amber:hover {
+      background: linear-gradient(135deg, #f5cc66, #d4a017);
+      box-shadow: 0 5px 20px rgba(212, 160, 23, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #d4a017;
+      color: #d4a017;
+    }
+
+    .btn-outline:hover {
+      background: rgba(212, 160, 23, 0.1);
+      color: #d4a017;
+    }
+
+    .btn-sm {
+      padding: .4rem 1rem;
+      font-size: .78rem
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: #fff
+    }
+
+    .btn-danger:hover {
+      background: #e05550
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted)
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--amber);
+      color: var(--amber)
+    }
+
+    #admin-bar {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 300;
+      display: none;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .6rem
+    }
+
+    .admin-mode #admin-bar {
+      display: flex
+    }
+
+    .admin-tip {
+      background: var(--amber);
+      color: #000;
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .35rem .85rem;
+      border-radius: 2rem;
+      white-space: nowrap
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      align-items: start
+    }
+
+    .about-photo-section {
+      position: sticky;
+      top: 7rem
+    }
+
+    .about-photo-big {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 1.25rem;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      display: block
+    }
+
+    .about-photo-ph {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 1.25rem;
+      background: linear-gradient(135deg, var(--card), var(--border));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem
+    }
+
+    .about-edit-photo-btn {
+      display: none;
+      width: 100%;
+      margin-top: .75rem
+    }
+
+    .admin-mode .about-edit-photo-btn {
+      display: flex
+    }
+
+    .tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1.25rem
+    }
+
+    .interest-tag {
+      background: var(--border);
+      color: var(--amber);
+      padding: .3rem .85rem;
+      border-radius: 2rem;
+      font-size: .78rem;
+      font-weight: 500
+    }
+
+    .about-content-text {
+      line-height: 1.85;
+      font-size: 1rem;
+      color: var(--text);
+      opacity: .9;
+      white-space: pre-wrap;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.25rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-mode .edit-btn-row {
+      display: flex
+    }
+
+    .edit-btn-row {
+      display: none;
+      gap: .75rem;
+      margin-top: 1rem
+    }
+
+    textarea.field {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: .75rem;
+      padding: .85rem 1rem;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .9rem;
+      width: 100%;
+      resize: vertical;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    textarea.field:focus {
+      border-color: var(--amber)
+    }
+
+    input.field {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: .75rem;
+      padding: .75rem 1rem;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .9rem;
+      width: 100%;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    input.field:focus {
+      border-color: var(--amber)
+    }
+
+    .research-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .add-research-btn {
+      display: none
+    }
+
+    .admin-mode .add-research-btn {
+      display: inline-flex
+    }
+
+    .research-grid {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .research-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+    }
+
+    .research-table th,
+    .research-table td {
+      padding: 1.25rem;
+      text-align: left;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .research-table th {
+      color: var(--amber);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(232, 160, 64, .05);
+    }
+
+    .rc-year {
+      font-size: .72rem;
+      color: var(--amber);
+      font-weight: 600;
+      letter-spacing: .06em;
+    }
+
+    .rc-type {
+      display: inline-block;
+      background: var(--border);
+      color: var(--muted);
+      font-size: .7rem;
+      padding: .2rem .65rem;
+      border-radius: 2rem;
+      font-weight: 500;
+    }
+
+    .rt-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: .4rem;
+      line-height: 1.4;
+    }
+
+    .rt-desc {
+      font-size: .84rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .rc-journal {
+      font-size: .78rem;
+      color: var(--blue);
+    }
+
+    .rt-actions {
+      display: flex;
+      gap: .4rem;
+    }
+
+    .rt-actions-cell,
+    .rt-actions-head {
+      display: none;
+    }
+
+    .admin-mode .rt-actions-cell,
+    .admin-mode .rt-actions-head {
+      display: table-cell;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .add-course-btn {
+      display: none
+    }
+
+    .admin-mode .add-course-btn {
+      display: inline-flex
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem
+    }
+
+    .course-tile {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .course-tile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--amber)
+    }
+
+    .course-tile:hover {
+      border-color: var(--amber);
+      transform: translateY(-2px)
+    }
+
+    .ct-code {
+      font-size: .7rem;
+      color: var(--amber);
+      font-weight: 700;
+      letter-spacing: .1em;
+      margin-bottom: .4rem
+    }
+
+    .ct-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: .4rem
+    }
+
+    .ct-count {
+      font-size: .78rem;
+      color: var(--muted)
+    }
+
+    .ct-actions {
+      display: none;
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      gap: .4rem
+    }
+
+    .admin-mode .ct-actions {
+      display: flex
+    }
+
+    #course-detail {
+      display: none
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--muted);
+      font-size: .85rem;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: color .2s;
+      background: none;
+      border: none;
+      font-family: 'Outfit', sans-serif
+    }
+
+    .back-btn:hover {
+      color: var(--amber)
+    }
+
+    .course-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .add-topic-btn {
+      display: none
+    }
+
+    .admin-mode .add-topic-btn {
+      display: inline-flex
+    }
+
+    .topic-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      margin-bottom: 1.25rem;
+      overflow: hidden
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      transition: background .2s
+    }
+
+    .topic-header:hover {
+      background: rgba(232, 160, 64, .04)
+    }
+
+    .topic-title-row {
+      display: flex;
+      align-items: center;
+      gap: .75rem
+    }
+
+    .topic-icon {
+      color: var(--amber);
+      font-size: 1rem
+    }
+
+    .topic-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream)
+    }
+
+    .topic-count {
+      font-size: .75rem;
+      color: var(--muted);
+      background: var(--border);
+      padding: .2rem .6rem;
+      border-radius: 2rem
+    }
+
+    .topic-chevron {
+      color: var(--muted);
+      transition: transform .3s;
+      font-size: .9rem
+    }
+
+    .topic-section.open .topic-chevron {
+      transform: rotate(180deg)
+    }
+
+    .topic-body {
+      display: none;
+      padding: 0 1.5rem 1.5rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .topic-section.open .topic-body {
+      display: block
+    }
+
+    .notes-list {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      margin-top: 1rem
+    }
+
+    .note-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: .75rem;
+      padding: .85rem 1.1rem;
+      transition: border-color .2s
+    }
+
+    .note-item:hover {
+      border-color: var(--amber)
+    }
+
+    .note-item-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem
+    }
+
+    .note-file-icon {
+      font-size: 1.2rem
+    }
+
+    .note-file-name {
+      font-size: .88rem;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .note-file-size {
+      font-size: .73rem;
+      color: var(--muted);
+      margin-top: .1rem
+    }
+
+    .note-item-right {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap
+    }
+
+    .note-preview-btn {
+      background: transparent;
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      padding: .4rem .9rem;
+      border-radius: 2rem;
+      font-size: .75rem;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      transition: all .2s
+    }
+
+    .note-preview-btn:hover {
+      background: var(--blue);
+      color: #fff
+    }
+
+    .note-download-btn {
+      background: var(--border);
+      border: none;
+      color: var(--amber);
+      padding: .4rem .9rem;
+      border-radius: 2rem;
+      font-size: .75rem;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      transition: all .2s
+    }
+
+    .note-download-btn:hover {
+      background: var(--amber);
+      color: #000
+    }
+
+    .note-delete-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: .35rem .75rem;
+      border-radius: 2rem;
+      font-size: .73rem;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all .2s
+    }
+
+    .note-delete-btn:hover {
+      background: var(--red);
+      color: #fff
+    }
+
+    .admin-mode .note-delete-btn {
+      display: inline-block
+    }
+
+    .topic-admin-row {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+      gap: .75rem;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .admin-mode .topic-admin-row {
+      display: flex
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: start
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem
+    }
+
+    .ci-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0
+    }
+
+    .ci-label {
+      font-size: .7rem;
+      color: var(--muted);
+      margin-bottom: .2rem
+    }
+
+    .ci-val {
+      font-size: .92rem;
+      color: var(--cream);
+      font-weight: 500
+    }
+
+    .contact-form-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem
+    }
+
+    .form-label {
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: .3rem;
+      letter-spacing: .04em
+    }
+
+    .contact-form-wrap input,
+    .contact-form-wrap textarea {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: .75rem;
+      padding: .8rem 1rem;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .9rem;
+      width: 100%;
+      outline: none;
+      transition: border-color .2s
+    }
+
+    .contact-form-wrap input:focus,
+    .contact-form-wrap textarea:focus {
+      border-color: var(--amber)
+    }
+
+    .contact-form-wrap textarea {
+      resize: vertical;
+      min-height: 120px
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem
+    }
+
+    .modal-overlay.open {
+      display: flex
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto
+    }
+
+    .modal h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--cream);
+      margin-bottom: 1.5rem
+    }
+
+    .modal-field {
+      margin-bottom: 1.1rem
+    }
+
+    .modal-field label {
+      display: block;
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: .4rem;
+      letter-spacing: .04em
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: .75rem;
+      margin-top: 1.75rem;
+      justify-content: flex-end
+    }
+
+    .file-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: .75rem;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s;
+      position: relative
+    }
+
+    .file-upload-area:hover {
+      border-color: var(--amber)
+    }
+
+    .file-upload-area input[type=file] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%
+    }
+
+    .file-upload-area p {
+      color: var(--muted);
+      font-size: .85rem;
+      pointer-events: none
+    }
+
+    .file-selected {
+      font-size: .8rem;
+      color: var(--green);
+      margin-top: .5rem
+    }
+
+    #login-modal .modal {
+      max-width: 400px
+    }
+
+    .login-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--amber);
+      text-align: center;
+      margin-bottom: .5rem;
+      font-style: italic
+    }
+
+    .login-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 2rem
+    }
+
+    #login-error {
+      color: var(--red);
+      font-size: .82rem;
+      margin-top: .5rem;
+      display: none
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--green);
+      color: #fff;
+      padding: .75rem 1.75rem;
+      border-radius: 2rem;
+      font-size: .85rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: all .3s;
+      pointer-events: none;
+      z-index: 600;
+      white-space: nowrap
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted)
+    }
+
+    .empty-state .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: .5
+    }
+
+    @media(max-width:900px) {
+
+      .hero-wrap,
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr
+      }
+
+      .courses-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      nav {
+        padding: .9rem 1.25rem
+      }
+
+      .container {
+        padding: 0 1.25rem
+      }
+    }
+
+    @media(max-width:600px) {
+
+      .courses-grid {
+        grid-template-columns: 1fr
+      }
+
+      .nav-links {
+        display: none
+      }
+    }
+
+    .message-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: .75rem;
+      padding: 1.25rem;
+      text-align: left
+    }
+
+    .message-card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: .5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem
+    }
+
+    .message-card-title {
+      font-weight: 600;
+      color: var(--amber);
+      font-size: 1.05rem
+    }
+
+    .message-card-email {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-top: 0.2rem
+    }
+
+    .message-card-date {
+      font-size: .75rem;
+      color: var(--muted)
+    }
+
+    .message-card-body {
+      color: var(--text);
+      font-size: .95rem;
+      line-height: 1.6;
+      white-space: pre-wrap
+    }
+
+    /* Math Big Bang Intro & Main Wrap */
+    #introText {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 9999;
+      opacity: 0;
+      animation: bbFadeIn 2s ease 1s forwards, bbFadeOut 2s ease 4s forwards;
+      pointer-events: none;
+    }
+
+    #introText h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px rgba(0, 150, 255, 0.8);
+      color: white;
+    }
+
+    #introText p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-theme="light"] #introText h1 {
+      color: #1a1814;
+      text-shadow: 0 0 20px rgba(74, 118, 161, 0.8);
+    }
+
+    [data-theme="light"] #introText p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    @keyframes bbFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes bbFadeOut {
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes bbShowMain {
+      to {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    #main-ui {
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      animation: bbShowMain 2s ease 6s forwards;
+    }
+
+    .hero-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:4rem;
+    }
+
+    .minimal-prof-card{
+      width: 340px;
+      height: 440px;
+
+      padding: 20px;
+
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(20px);
+
+      border-radius: 32px;
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      box-shadow:
+          0 0 25px rgba(77,166,255,.15),
+          0 0 80px rgba(77,166,255,.05);
+
+      position:relative;
+
+      transition:0.4s ease;
+    }
+
+    .minimal-prof-card:hover{
+      transform:translateY(-8px);
+    }
+
+    .hero-portrait{
+      width: 100%;
+      height: 100%;
+
+      border-radius: 24px;
+
+      object-fit: cover;
+      object-position: center top;
+
+      display:block;
+    }
+
+    .minimal-prof-card::after{
+      content:'';
+
+      position:absolute;
+      inset:20px;
+      border-radius: 24px;
+
+      background:
+          linear-gradient(
+              to top,
+              rgba(0,0,0,.45),
+              rgba(0,0,0,.05),
+              transparent
+          );
+
+      pointer-events:none;
+    }
+
+    .hero-quote{
+      margin:2rem 0;
+
+      font-size:1.1rem;
+      line-height:1.8;
+
+      color:#cbd5e1;
+      font-style:italic;
+
+      max-width:500px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Math Universe Canvas Background -->
+  <canvas id="stars"></canvas>
+
+  <!-- Math Big Bang Intro Text -->
+  <div id="introText">
+    <h1>∑ ∫ π e √ ∞</h1>
+    <p>From nothing... came mathematics</p>
+  </div>
+
+  <div id="main-ui">
+    <nav>
+      <div class="nav-logo" id="math-quote"
+        style="font-size: 0.85rem; max-width: 350px; line-height: 1.2; white-space: normal; display: flex; align-items: center; transition: opacity 0.5s ease;">
+        ∫ Mathematics is the music of reason. — James Joseph Sylvester</div>
+      <script>
+        const mathQuotes = [
+          "Mathematics is the music of reason. — James Joseph Sylvester",
+          "Pure mathematics is, in its way, the poetry of logical ideas. — Albert Einstein",
+          "The essence of mathematics lies in its freedom. — Georg Cantor",
+          "Mathematics is the queen of the sciences. — Carl Friedrich Gauss",
+          "Go down deep enough into anything and you will find mathematics. — Dean Schlicter",
+          "Mathematics is the most beautiful and most powerful creation of the human spirit. — Stefan Banach",
+          "Nature is written in mathematical language. — Galileo Galilei",
+          "God does arithmetic. — Karl Friedrich Gauss",
+          "Numbers rule the universe. — Pythagoras",
+          "There is geometry in the humming of the strings, there is music in the spacing of the spheres. — Pythagoras",
+          "Mathematics is the door and key to the sciences. — Roger Bacon",
+          "Black holes result from God dividing the universe by zero. — Unknown",
+          "If people do not believe that mathematics is simple, it is only because they do not realize how complicated life is. — John von Neumann",
+          "In mathematics the art of proposing a question must be held of higher value than solving it. — Georg Cantor",
+          "Mathematics compares the most diverse phenomena and discovers the secret analogies that unite them. — Joseph Fourier",
+          "To understand the universe, you must understand the language in which it's written, the language of Mathematics. — Galileo Galilei",
+          "Life is a math equation. In order to gain the most, you have to know how to convert negatives into positives. — Anonymous",
+          "A mathematician who is not also something of a poet will never be a complete mathematician. — Karl Weierstrass",
+          "The study of mathematics, like the Nile, begins in minuteness but ends in magnificence. — Charles Caleb Colton",
+          "Without mathematics, there's nothing you can do. — Shakuntala Devi",
+          "Mathematics allows for no hypocrisy and no vagueness. — Stendhal",
+          "Math is the only place where truth and beauty mean the same thing. — Danica McKellar",
+          "A mathematician is a device for turning coffee into theorems. — Paul Erdos",
+          "Mathematics knows no races or geographic boundaries. — David Hilbert",
+          "God used beautiful mathematics in creating the world. — Paul Dirac",
+          "The highest form of pure thought is in mathematics. — Plato",
+          "The mathematical sciences particularly exhibit order, symmetry, and limitation. — Aristotle",
+          "As far as the laws of mathematics refer to reality, they are not certain, and as far as they are certain, they do not refer to reality. — Albert Einstein",
+          "Mathematics is not about numbers, equations, computations, or algorithms: it is about understanding. — William Paul Thurston",
+          "Some mathematician I believe has said that true pleasure lies not in the discovery of truth, but in the search for it. — Leo Tolstoy",
+          "Mathematics is a game played according to certain simple rules with meaningless marks on paper. — David Hilbert",
+          "The essence of math is not to make simple things complicated, but to make complicated things simple. — S. Gudder",
+          "It is clear that the chief end of mathematical study must be to make the students think. — John Wesley Young",
+          "Obvious is the most dangerous word in mathematics. — Eric Temple Bell",
+          "Mathematics consists of proving the most obvious thing in the least obvious way. — George Polya",
+          "What is mathematics? It is only a systematic effort of solving puzzles posed by nature. — Shakuntala Devi",
+          "Mathematics is the art of giving the same name to different things. — Henri Poincare",
+          "There is no royal road to geometry. — Euclid",
+          "Do not worry about your difficulties in Mathematics. I can assure you mine are still greater. — Albert Einstein",
+          "Mathematics starts with a premise and tells you what happens next. — Steven Strogatz",
+          "Truth is ever to be found in simplicity, and not in the multiplicity and confusion of things. — Isaac Newton",
+          "Mathematics is a place where you can do things which you can't do in the real world. — Marcus du Sautoy",
+          "An equation means nothing to me unless it expresses a thought of God. — Srinivasa Ramanujan",
+          "Five out of four people have trouble with fractions. — Steven Wright",
+          "Mathematics reveals its secrets only to those who approach it with pure love, for its own beauty. — Archimedes",
+          "I've always been interested in using mathematics to make the world work better. — Alvin E. Roth",
+          "The only way to learn mathematics is to do mathematics. — Paul Halmos",
+          "Geometry is knowledge of the eternally existent. — Pythagoras",
+          "Just because we can't find a solution, it doesn't mean there isn't one. — Andrew Wiles",
+          "The book of nature is written in the language of mathematics. — Galileo Galilei",
+          "Perfect numbers like perfect men are very rare. — Rene Descartes",
+          "Wherever there is number, there is beauty. — Proclus",
+          "Mathematics represents the high water mark of the human intellect. — Anonymous",
+          "You don't have to be a mathematician to have a feel for numbers. — John Forbes Nash Jr.",
+          "The imaginary number is a fine and wonderful recourse of the divine spirit. — Gottfried Wilhelm Leibniz",
+          "Why do children dread mathematics? Because of the wrong approach. — Shakuntala Devi",
+          "It is impossible to be a mathematician without being a poet in soul. — Sofia Kovalevskaya",
+          "Nature operates by the laws of mathematics. — Leonardo da Vinci",
+          "Mathematics is an independent world created out of pure intelligence. — James Joseph Sylvester",
+          "To invent, you need a good imagination and a pile of junk. — Thomas Edison",
+          "There will always be science, engineering, and technology. And there will always, always be mathematics. — Katherine Johnson",
+          "Mathematics are the result of mysterious powers which no one understands. — Charles Darwin",
+          "Equations are just the boring part of mathematics. I attempt to see things in terms of geometry. — Stephen Hawking",
+          "Mathematics is the science of what is clear by itself. — Carl Jacobi",
+          "No human investigation can be called true science without going through mathematical tests. — Leonardo da Vinci",
+          "Geometry is the right foundation of all painting. — Albrecht Durer",
+          "Every formula which expresses a law of nature is a hymn of praise to God. — Maria Mitchell",
+          "The laws of nature are but the mathematical thoughts of God. — Euclid",
+          "Mathematics is the supreme judge; from its decisions there is no appeal. — Tobias Dantzig",
+          "Calculus is the most powerful weapon of thought yet devised by the wit of man. — Wallace B. Smith",
+          "God exists since mathematics is consistent, and the Devil exists since we cannot prove it. — Andre Weil",
+          "Since the mathematicians have invaded the theory of relativity, I do not understand it myself anymore. — Albert Einstein",
+          "A fractal is a way of seeing infinity. — Benoit Mandelbrot",
+          "Logic is the hygiene the mathematician practices to keep his ideas healthy and strong. — Hermann Weyl",
+          "Mathematics is a language. — Josiah Willard Gibbs",
+          "One person's constant is another person's variable. — Susan Gerhart",
+          "Stand firm in your refusal to remain conscious during algebra. — Fran Lebowitz",
+          "I am still working on my mathematics, and I am optimistic. — Yitang Zhang",
+          "Mathematics is written for mathematicians. — Nicolaus Copernicus",
+          "To those who do not know mathematics it is difficult to get across a real feeling as to the beauty. — Richard Feynman",
+          "Mathematics is the only instructional material that can be presented in an entirely undogmatic way. — Max Dehn",
+          "There are things which seem incredible to most men who have not studied Mathematics. — Archimedes",
+          "In mathematics, you don't understand things. You just get used to them. — John von Neumann",
+          "The difference between the poet and the mathematician is that the poet tries to get his head into the heavens while the mathematician tries to get the heavens into his head. — G.K. Chesterton",
+          "The elegant logic of mathematics is a beautiful symphony of reality. — Unknown",
+          "Mathematicians stand on each other's shoulders. — Carl Friedrich Gauss",
+          "Mathematics is the key and door to the sciences. — Galileo Galilei",
+          "Arithmetic is where numbers fly like pigeons in and out of your head. — Carl Sandburg",
+          "If I were again beginning my studies, I would follow the advice of Plato and start with mathematics. — Galileo Galilei",
+          "Number is the ruler of forms and ideas. — Pythagoras",
+          "Any good theorem should have several proofs, the more the better. — Michael Atiyah",
+          "Mathematics takes us into the region of absolute necessity. — Bertrand Russell",
+          "A mathematical theory is not to be considered complete until you can explain it to the first man whom you meet on the street. — David Hilbert",
+          "Mathematicians like patterns. — Andrew Wiles",
+          "Mathematics may not teach us how to add love or minus hate. But it gives us every reason to hope that every problem has a solution. — Unknown",
+          "Physics is mathematical not because we know so much about the physical world, but because we know so little. — Bertrand Russell",
+          "It is not knowledge, but the act of learning which grants the greatest enjoyment. — Carl Friedrich Gauss",
+          "Algebra is the offer made by the devil to the mathematician. — Michael Atiyah",
+          "In math, you're either right or you're wrong. — Katherine Johnson",
+          "Without mathematics, there is nothing you can do. Everything around you is mathematics. — Shakuntala Devi"
+        ];
+        let quoteIndex = 0;
+        const quoteEl = document.getElementById('math-quote');
+        setInterval(() => {
+          quoteEl.style.opacity = '0';
+          setTimeout(() => {
+            quoteIndex = (quoteIndex + 1) % mathQuotes.length;
+            quoteEl.innerText = "∫ " + mathQuotes[quoteIndex];
+            quoteEl.style.opacity = '1';
+          }, 500);
+        }, 5000);
+      </script>
+      <ul class="nav-links">
+        <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+        <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+        <li><a onclick="showPage('research')" id="nav-research">Research</a></li>
+        <li><a onclick="showPage('notes')" id="nav-notes">Notes</a></li>
+        <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <button id="theme-btn" onclick="toggleTheme()"
+          style="background:transparent;border:none;color:var(--amber);cursor:pointer;font-size:1.2rem;margin-right:0.5rem;"
+          title="Toggle Theme">🌓</button>
+        <span id="admin-badge">⚡ Admin Mode</span>
+        <button id="login-btn" onclick="openLoginModal()">Admin Login</button>
+      </div>
+    </nav>
+
+
+
+    <div id="admin-bar">
+      <div class="admin-tip">✏️ Admin Mode — You can edit everything</div>
+      <div style="display:flex; gap:0.5rem; justify-content:flex-end; width:100%;">
+        <button class="btn btn-amber btn-sm" onclick="openInboxModal()">📥 View Inbox</button>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="container">
+        <div class="hero-wrap">
+          <div>
+
+            <h1 class="hero-name">
+              A. Ponmana Selvan
+            </h1>
+
+            <p class="hero-dept">
+              Associate Professor · Rajalakshmi Engineering College
+            </p>
+
+            <p class="hero-quote">
+              "Pure mathematics is, in its way, the poetry of logical ideas."
+            </p>
+
+            <div class="hero-btns">
+              <button class="btn btn-amber" onclick="showPage('about')">
+                About Me
+              </button>
+
+              <button class="btn btn-outline" onclick="showPage('contact')">
+                Contact
+              </button>
+            </div>
+          </div>
+
+          <div class="minimal-prof-card">
+              <img
+                  id="home-photo-img"
+                  class="hero-portrait"
+                  src=""
+                  alt="Professor"
+              />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="page" id="page-about">
+      <div class="container">
+        <div style="margin-bottom:2.5rem">
+          <div class="s-tag">About Me</div>
+          <h2 class="s-title">The mathematician<br>behind the board</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-photo-section">
+            <div id="about-photo-ph" class="about-photo-ph">👨‍🏫</div>
+            <img id="about-photo-img" class="about-photo-big" style="display:none" src="" alt="Professor" />
+            <button class="btn btn-outline btn-sm about-edit-photo-btn"
+              onclick="document.getElementById('photo-upload-about').click()">📷 Change Photo</button>
+            <input type="file" id="photo-upload-about" accept="image/*" style="display:none"
+              onchange="handlePhotoUpload(this,'about')" />
+            <div class="tags-wrap" id="interests-wrap"></div>
+            <div style="margin-top:1rem;display:none" id="interests-admin-row">
+              <button class="btn btn-ghost btn-sm" onclick="openInterestModal()">+ Add Interest Tag</button>
+            </div>
+          </div>
+          <div>
+            <div id="about-view-mode">
+              <div id="about-content-display" class="about-content-text"
+                style="min-height:200px;color:var(--muted);font-style:italic">No bio added yet. Admin can click Edit to
+                add one.</div>
+              <div class="edit-btn-row">
+                <button class="btn btn-outline btn-sm" onclick="toggleAboutEdit(true)">✏️ Edit Bio</button>
+              </div>
+            </div>
+            <div id="about-edit-mode" style="display:none">
+              <div class="modal-field"><label>Full Name</label><input class="field" id="edit-fullname"
+                  placeholder="Dr. Alan Carter" /></div>
+              <div class="modal-field"><label>Title / Position</label><input class="field" id="edit-title"
+                  placeholder="Associate Professor · University of Westbridge" /></div>
+              <div class="modal-field"><label>Email</label><input class="field" id="edit-email"
+                  placeholder="alan@university.edu" /></div>
+              <div class="modal-field"><label>Short Bio (shown on homepage)</label><textarea class="field"
+                  id="edit-short-bio" rows="2" placeholder="A one-liner about you..."></textarea></div>
+              <div class="modal-field"><label>Full Bio</label><textarea class="field" id="edit-full-bio" rows="8"
+                  placeholder="Write your full biography here..."></textarea></div>
+              <div class="modal-field"><label>Years of Teaching</label><input class="field" id="edit-years"
+                  type="number" placeholder="14" /></div>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+                <button class="btn btn-amber" onclick="saveAbout()">💾 Save Changes</button>
+                <button class="btn btn-ghost" onclick="toggleAboutEdit(false)">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESEARCH -->
+    <div class="page" id="page-research">
+      <div class="container">
+        <div class="research-header">
+          <div>
+            <div class="s-tag">Research</div>
+            <h2 class="s-title">Publications & Projects</h2>
+            <p class="s-sub" style="margin-bottom:0">Exploring the frontiers of mathematics through rigorous research.
+            </p>
+          </div>
+          <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+            <select id="research-sort" onchange="renderResearch()"
+              style="background:var(--card);border:1px solid var(--border);border-radius:.5rem;padding:.4rem .8rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;">
+              <option value="new-to-old">Sort by Year: New to Old</option>
+              <option value="old-to-new">Sort by Year: Old to New</option>
+            </select>
+            <button class="btn btn-amber add-research-btn" onclick="openResearchModal()">+ Add Publication</button>
+          </div>
+        </div>
+        <div class="research-grid" id="research-grid">
+          <div class="empty-state" style="grid-column:1/-1">
+            <div class="empty-icon">📄</div>
+            <p>No publications added yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="page" id="page-notes">
+      <div class="container">
+        <div id="courses-list-view">
+          <div class="notes-header">
+            <div>
+              <div class="s-tag">Course Notes</div>
+              <h2 class="s-title">Materials & Resources</h2>
+              <p class="s-sub" style="margin-bottom:0">Select a course to access lecture notes, problem sets, and more.
+              </p>
+            </div>
+            <button class="btn btn-amber add-course-btn" onclick="openAddCourseModal()">+ Add Course</button>
+          </div>
+          <div class="courses-grid" id="courses-grid">
+            <div class="empty-state" style="grid-column:1/-1">
+              <div class="empty-icon">📚</div>
+              <p>No courses added yet.</p>
+            </div>
+          </div>
+        </div>
+        <div id="course-detail">
+          <button class="back-btn" onclick="backToCourses()">← Back to Courses</button>
+          <div class="course-detail-header">
+            <div>
+              <h2 class="s-title" id="detail-course-name">Calculus I</h2>
+            </div>
+            <button class="btn btn-amber add-topic-btn" onclick="openAddTopicModal()">+ Add Topic</button>
+          </div>
+          <div id="topics-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="page" id="page-contact">
+      <div class="container">
+        <div style="margin-bottom:2.5rem">
+          <div class="s-tag">Contact</div>
+          <h2 class="s-title">Let's Talk Math</h2>
+          <p class="s-sub">Questions, office hours, research inquiries — my inbox is open.</p>
+        </div>
+        <div class="contact-grid">
+          <div>
+            <div class="contact-card">
+              <div class="ci-icon">📍</div>
+              <div>
+                <div class="ci-label">Office</div>
+                <div class="ci-val" id="c-office">Math Building, Room 214</div>
+              </div>
+            </div>
+            <div class="contact-card">
+              <div class="ci-icon">🕐</div>
+              <div>
+                <div class="ci-label">Office Hours</div>
+                <div class="ci-val" id="c-hours">Mon & Wed 2–4 PM · Fri 10 AM–12 PM</div>
+              </div>
+            </div>
+            <div class="contact-card">
+              <div class="ci-icon">✉️</div>
+              <div>
+                <div class="ci-label">Email</div>
+                <div class="ci-val" id="c-email-display">alan.carter@westbridge.edu</div>
+              </div>
+            </div>
+            <div class="contact-card">
+              <div class="ci-icon">🏛️</div>
+              <div>
+                <div class="ci-label">University</div>
+                <div class="ci-val">University of Westbridge</div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-wrap">
+            <div>
+              <div class="form-label">Your Name</div><input id="contact-name" type="text" placeholder="Jane Smith" />
+            </div>
+            <div>
+              <div class="form-label">Email</div><input id="contact-email" type="email"
+                placeholder="jane@student.edu" />
+            </div>
+            <div>
+              <div class="form-label">Subject</div><input id="contact-subject" type="text"
+                placeholder="Question about..." />
+            </div>
+            <div>
+              <div class="form-label">Message</div><textarea id="contact-message"
+                placeholder="Hi Professor, I had a question about..."></textarea>
+            </div>
+            <button class="btn btn-amber" style="width:100%;justify-content:center" onclick="submitMessage()">Send
+              Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="login-modal">
+      <div class="modal">
+        <div class="login-logo">∫ Admin Login</div>
+        <div class="login-sub">Enter the admin password to enable editing</div>
+        <div class="modal-field">
+          <label>Password</label>
+          <input class="field" type="password" id="login-pw" placeholder="Enter password..."
+            onkeydown="if(event.key==='Enter')doLogin()" />
+          <div id="login-error">Incorrect password. Try: <strong>admin123</strong></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('login-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="doLogin()">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="password-modal">
+      <div class="modal" style="max-width:400px">
+        <h3>Set a Custom Password?</h3>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.5">You just logged in with the
+          default password. Would you like to set a safer, custom password for your admin portal?</p>
+        <div class="modal-field">
+          <label>New Password</label>
+          <input class="field" type="password" id="new-pw" placeholder="Enter new password..." />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closePasswordModal()">Skip for now</button>
+          <button class="btn btn-amber" onclick="changePassword()">Save Password</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="research-modal">
+      <div class="modal">
+        <h3 id="research-modal-title">Add Publication / Project</h3>
+        <div class="modal-field"><label>Type</label>
+          <select class="field" id="r-type" onchange="handleResearchTypeChange()"
+            style="background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;width:100%">
+            <option value="">Select Type...</option>
+            <option value="Journal Paper">Journal Paper</option>
+            <option value="Conference Paper">Conference Paper</option>
+            <option value="Paper Presentation">Paper Presentation</option>
+            <option value="Participation">Participation</option>
+            <option value="Book Chapter">Book Chapter</option>
+            <option value="Project">Project</option>
+          </select>
+        </div>
+
+        <div id="research-group-1" style="display:none;">
+          <div class="modal-field"><label>Paper/Project Title</label><input class="field" id="r-paper-title"
+              placeholder="Title..." /></div>
+          <div class="modal-field"><label>Authors</label><input class="field" id="r-authors-g1"
+              placeholder="Authors..." /></div>
+          <div class="modal-field"><label>Journal/Book/Chapter Name</label><input class="field" id="r-journal-name"
+              placeholder="Venue..." /></div>
+          <div class="modal-field"><label>Month and Year</label><input class="field" id="r-month-year"
+              placeholder="e.g. October 2023" /></div>
+          <div class="modal-field"><label>Volume and Issue</label><input class="field" id="r-volume-issue"
+              placeholder="Volume and issue..." /></div>
+          <div class="modal-field"><label>Page Number</label><input class="field" id="r-page-number"
+              placeholder="Page number..." /></div>
+          <div class="modal-field"><label>DOI</label><input class="field" id="r-doi" placeholder="DOI..." /></div>
+          <div class="modal-field"><label>Abstract</label><textarea class="field" id="r-abstract" rows="3"
+              placeholder="Abstract..."></textarea></div>
+        </div>
+
+        <div id="research-group-2" style="display:none;">
+          <div class="modal-field"><label>Title</label><input class="field" id="r-title-g2" placeholder="Title..." />
+          </div>
+          <div class="modal-field"><label>Name of the Conference</label><input class="field" id="r-conference-name"
+              placeholder="Conference name..." /></div>
+          <div class="modal-field"><label>Date of the Conference</label><input class="field" id="r-conference-date"
+              type="date" /></div>
+          <div class="modal-field"><label>Organized By</label><input class="field" id="r-organized-by"
+              placeholder="Organized by..." /></div>
+          <div class="modal-field">
+            <label>Certificate Upload</label>
+            <div class="file-upload-area">
+              <input type="file" id="r-certificate"
+                onchange="document.getElementById('cert-label').textContent = this.files[0] ? '✓ ' + this.files[0].name : ''" />
+              <p>📎 Click or drag certificate here</p>
+            </div>
+            <div class="file-selected" id="cert-label"></div>
+          </div>
+        </div>
+
+        <div id="research-group-3" style="display:none;">
+          <div class="modal-field"><label>Participation Type</label>
+            <select class="field" id="r-participation-type"
+              style="background:var(--card);border:1.5px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:.9rem;outline:none;width:100%">
+              <option value="Conference">Conference</option>
+              <option value="FDP">FDP</option>
+              <option value="Workshop">Workshop</option>
+            </select>
+          </div>
+          <div class="modal-field"><label>Title</label><input class="field" id="r-title-g3" placeholder="Title..." />
+          </div>
+          <div class="modal-field"><label>Date</label><input class="field" id="r-date-g3" type="date" /></div>
+          <div class="modal-field"><label>Organized By</label><input class="field" id="r-organized-by-g3"
+              placeholder="Organized by..." /></div>
+          <div class="modal-field">
+            <label>Certificate Upload</label>
+            <div class="file-upload-area">
+              <input type="file" id="r-certificate-g3"
+                onchange="document.getElementById('cert-label-g3').textContent = this.files[0] ? '✓ ' + this.files[0].name : ''" />
+              <p>📎 Click or drag certificate here</p>
+            </div>
+            <div class="file-selected" id="cert-label-g3"></div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('research-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="saveResearch()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="course-modal">
+      <div class="modal">
+        <h3>Add Course</h3>
+        <input type="hidden" id="c-code" value="" />
+        <div class="modal-field"><label>Course Name</label><input class="field" id="c-name" placeholder="Calculus I" />
+        </div>
+        <div class="modal-field"><label>Description</label><textarea class="field" id="c-desc" rows="3"
+            placeholder="Brief description..."></textarea></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('course-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="saveCourse()">Create Course</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="topic-modal">
+      <div class="modal">
+        <h3>Add Topic / Subtopic</h3>
+        <div class="modal-field"><label>Topic Name</label><input class="field" id="t-name"
+            placeholder="Chapter 1: Limits and Continuity" /></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('topic-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="saveTopic()">Add Topic</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="note-modal">
+      <div class="modal">
+        <h3>Upload Notes</h3>
+        <div class="modal-field"><label>Note Title</label><input class="field" id="n-title"
+            placeholder="Lecture 1 Notes / Problem Set 2..." /></div>
+        <div class="modal-field">
+          <label>Upload File (PDF, image, doc, etc.)</label>
+          <div class="file-upload-area">
+            <input type="file" id="n-file" onchange="updateFileLabel()" />
+            <p>📎 Click or drag a file here</p>
+          </div>
+          <div class="file-selected" id="file-label"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('note-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="saveNote()">Upload</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="interest-modal">
+      <div class="modal">
+        <h3>Add Interest Tag</h3>
+        <div class="modal-field"><label>Tag</label><input class="field" id="interest-input"
+            placeholder="e.g. Topology, PDEs, Number Theory..." /></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('interest-modal')">Cancel</button>
+          <button class="btn btn-amber" onclick="saveInterest()">Add Tag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="inbox-modal">
+      <div class="modal" style="max-width:800px">
+        <h3>Student Queries (Inbox)</h3>
+        <div id="inbox-list" style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem;">
+          <p class="empty-state">Loading messages...</p>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal('inbox-modal')">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="crop-modal">
+      <div class="modal" style="max-width:500px; padding-bottom:1rem;">
+        <h3>Crop Photo</h3>
+        <div
+          style="max-height:400px; margin-bottom:1rem; text-align:center; background:#000; border-radius:0.5rem; overflow:hidden;">
+          <img id="cropper-image" style="max-width:100%; display:block;" src="" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeCropModal()">Cancel</button>
+          <button class="btn btn-amber" onclick="uploadCroppedPhoto()">Crop & Upload</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast">✓ Saved!</div>
+
+    <script>
+      var ADMIN_PASSWORD = 'admin123';
+      var isAdmin = false;
+
+      var defaultState = {
+        profile: {
+          fullname: 'Dr. Alan Carter', firstname: 'Alan', lastname: 'Carter',
+          title: 'Associate Professor · University of Westbridge',
+          email: 'alan.carter@westbridge.edu',
+          shortBio: 'Passionate about making mathematics beautiful, accessible, and alive. My door is always open.',
+          fullBio: '', years: '14', photo: null,
+          interests: ['PDEs', 'Topology', 'Fluid Dynamics'],
+          office: 'Math Building, Room 214', hours: 'Mon & Wed 2–4 PM · Fri 10 AM–12 PM'
+        },
+        research: [], courses: []
+      };
+
+      var API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3000/api'
+        : window.location.origin + '/api';
+      var state = JSON.parse(JSON.stringify(defaultState));
+
+      // Load State from Backend
+      async function loadState() {
+        try {
+          const res = await fetch(API_URL + '/state');
+          if (res.ok) {
+            const data = await res.json();
+            state = data;
+          }
+        } catch (e) {
+          console.error('Failed to load state from backend:', e);
+        }
+      }
+
+      // Save State to Backend
+      async function saveState() {
+        try {
+          await fetch(API_URL + '/state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(state)
+          });
+        } catch (e) {
+          showToast('Failed to save to server');
+        }
+      }
+
+      // Ensure init waits for State Load
+      async function boot() {
+        await loadState();
+        init();
+      }
+      boot();
+
+      // PAGE NAV
+      function showPage(name) {
+        document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+        document.querySelectorAll('.nav-links a').forEach(function (a) { a.classList.remove('active'); });
+        document.getElementById('page-' + name).classList.add('active');
+        document.getElementById('nav-' + name).classList.add('active');
+        if (name === 'notes') renderCourses();
+        if (name === 'research') renderResearch();
+        if (name === 'about') renderAbout();
+      }
+
+      // ADMIN AUTH
+      var ADMIN_PASSWORD = ''; // Removed hardcoded password
+
+      function openLoginModal() { document.getElementById('login-pw').value = ''; document.getElementById('login-error').style.display = 'none'; openModal('login-modal'); }
+
+      async function doLogin() {
+        var pw = document.getElementById('login-pw').value;
+        try {
+          const res = await fetch(API_URL + '/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pw })
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            ADMIN_PASSWORD = pw; // Temporary session storage
+            isAdmin = true;
+            document.body.classList.add('admin-mode');
+            document.getElementById('admin-badge').style.display = 'inline-block';
+            document.getElementById('login-btn').textContent = 'Admin ✓';
+            document.getElementById('login-btn').style.background = 'var(--amber)';
+            document.getElementById('login-btn').style.color = '#000';
+            document.getElementById('login-btn').onclick = null;
+            document.getElementById('interests-admin-row').style.display = 'flex';
+            closeModal('login-modal');
+
+            if (data.isDefault) {
+              openModal('password-modal');
+            } else {
+              showToast('Welcome back, Professor! ✨');
+            }
+          } else {
+            document.getElementById('login-error').style.display = 'block';
+            document.getElementById('login-error').innerHTML = 'Incorrect password.';
+          }
+        } catch (e) {
+          showToast('Login server error');
+        }
+      }
+
+      function closePasswordModal() {
+        closeModal('password-modal');
+        showToast('Welcome back, Professor! ✨ (Using default password)');
+      }
+
+      async function changePassword() {
+        var newPw = document.getElementById('new-pw').value.trim();
+        if (!newPw) return showToast('Please enter a password');
+
+        try {
+          const res = await fetch(API_URL + '/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newPassword: newPw })
+          });
+          if (res.ok) {
+            ADMIN_PASSWORD = newPw;
+            closeModal('password-modal');
+            showToast('Password successfully changed! 🔒');
+          }
+        } catch (e) {
+          showToast('Failed to change password');
+        }
+      }
+      function logout() {
+        isAdmin = false;
+        document.body.classList.remove('admin-mode');
+        document.getElementById('admin-badge').style.display = 'none';
+        document.getElementById('login-btn').textContent = 'Admin Login';
+        document.getElementById('login-btn').style.background = '';
+        document.getElementById('login-btn').style.color = '';
+        document.getElementById('login-btn').onclick = openLoginModal;
+        document.getElementById('interests-admin-row').style.display = 'none';
+        showToast('Logged out');
+      }
+
+      // MODALS
+      function openModal(id) { document.getElementById(id).classList.add('open'); }
+      function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+      document.querySelectorAll('.modal-overlay').forEach(function (m) {
+        m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('open'); });
       });
-      await saveState();
-      renderTopics();
-      setTimeout(function() {
-        var el = document.getElementById('topic-' + currentTopicId);
-        if (el) el.classList.add('open');
-      }, 50);
-      closeModal('note-modal');
-      showToast('Note uploaded to server!');
-    } else {
-      showToast('Error uploading file');
-    }
-  } catch (err) {
-    showToast('Upload failed');
-  }
-}
-function deleteNote(topicId, noteId) {
-  if (!confirm('Delete this note?')) return;
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  var topic = course.topics.find(function(t){ return t.id === topicId; });
-  topic.notes = topic.notes.filter(function(n){ return n.id !== noteId; });
-  saveState();
-  renderTopics();
-  setTimeout(function() {
-    var el = document.getElementById('topic-' + topicId);
-    if (el) el.classList.add('open');
-  }, 50);
-  showToast('Deleted');
-}
- 
-// ── DOWNLOAD: base64 → Blob → object URL (works for all file types) ──
-function downloadNote(topicId, noteId) {
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  var topic = course.topics.find(function(t){ return t.id === topicId; });
-  var note = topic.notes.find(function(n){ return n.id === noteId; });
-  
-  // If it's a blob/object URL or already a base64 string
-  var a = document.createElement('a');
-  a.href = note.data;
-  a.download = note.filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  showToast('Downloading ' + note.filename + ' ↓');
-}
- 
-// ── PREVIEW: open PDF in new tab ──
-function previewNote(topicId, noteId) {
-  var course = state.courses.find(function(c){ return c.id === currentCourseId; });
-  var topic = course.topics.find(function(t){ return t.id === topicId; });
-  var note = topic.notes.find(function(n){ return n.id === noteId; });
-  window.open(note.data, '_blank');
-}
- 
-function formatSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1024/1024).toFixed(1) + ' MB';
-}
- 
-// STATS
-function updateStats() {
-  document.getElementById('stat-pubs').textContent = state.research.length;
-  document.getElementById('stat-courses').textContent = state.courses.length;
-}
- 
-// TOAST
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2500);
-}
- 
-// THEME
-function toggleTheme() {
-  var current = document.documentElement.getAttribute('data-theme') || 'dark';
-  var target = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', target);
-  try { localStorage.setItem('profPortalTheme', target); } catch(e) {}
-}
 
-// INIT
-function init() {
-  var savedTheme = 'dark';
-  try { savedTheme = localStorage.getItem('profPortalTheme') || 'dark'; } catch(e) {}
-  document.documentElement.setAttribute('data-theme', savedTheme);
+      // PHOTO CROP & UPLOAD
+      var cropper = null;
 
-  applyProfileToUI();
-  applyPhoto();
-  renderInterests();
-  updateStats();
-}
-</script>
+      function handlePhotoUpload(input, target) {
+        var file = input.files[0];
+        if (!file) return;
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var imgUrl = e.target.result;
+          var imageEl = document.getElementById('cropper-image');
+          imageEl.src = imgUrl;
+
+          openModal('crop-modal');
+
+          if (cropper) {
+            cropper.destroy();
+          }
+
+          cropper = new Cropper(imageEl, {
+            aspectRatio: 1,
+            viewMode: 1,
+            autoCropArea: 1,
+            background: false
+          });
+        };
+        reader.readAsDataURL(file);
+
+        // Reset input so the same file could be selected again if cancelled
+        input.value = '';
+      }
+
+      function closeCropModal() {
+        if (cropper) {
+          cropper.destroy();
+          cropper = null;
+        }
+        closeModal('crop-modal');
+      }
+
+      function uploadCroppedPhoto() {
+        if (!cropper) return;
+
+        showToast('Preparing image...');
+
+        cropper.getCroppedCanvas({
+          width: 400,
+          height: 400
+        }).toBlob(async function (blob) {
+          if (!blob) return showToast('Crop failed');
+
+          var formData = new FormData();
+          formData.append('file', blob, 'profile_cropped.jpg'); // Ensure filename and type
+
+          try {
+            showToast('Uploading photo...');
+            const res = await fetch(API_URL + '/upload', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              state.profile.photo = data.fileUrl; // Save image URL rather than Base64
+              await saveState();
+              applyPhoto();
+              closeCropModal();
+              showToast('Photo updated successfully!');
+            } else {
+              showToast('Upload failed to complete.');
+            }
+          } catch (err) {
+            showToast('Failed to upload photo');
+          }
+        }, 'image/jpeg', 0.9);
+      }
+      function applyPhoto() {
+        var src = state.profile.photo;
+        ['home', 'about'].forEach(function (t) {
+          var ph = document.getElementById(t + '-photo-ph');
+          var img = document.getElementById(t + '-photo-img');
+          
+           var defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 620'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%230f172a'/><stop offset='100%25' stop-color='%231e3a8a'/></linearGradient></defs><rect width='100%25' height='100%25' fill='url(%23g)'/><circle cx='210' cy='220' r='100' fill='%23334155' opacity='0.5'/><path d='M210 120 A100 100 0 0 1 210 320 A100 100 0 0 1 210 120' fill='none' stroke='%23f5b942' stroke-width='4' opacity='0.3' stroke-dasharray='10 5'/><text x='210' y='400' font-family='serif' font-size='28' fill='%23e2e8f0' text-anchor='middle' letter-spacing='1'>∑ ∫ π e √ ∞</text><text x='210' y='440' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'>A. Ponmana Selvan</text></svg>";
+          var activeSrc = src || (t === 'home' ? defaultAvatar : null);
+          
+          if (activeSrc) {
+            if (ph) ph.style.display = 'none';
+            if (img) { img.src = activeSrc; img.style.display = 'block'; }
+          }
+          else {
+            if (ph) ph.style.display = 'flex';
+            if (img) img.style.display = 'none';
+          }
+        });
+      }
+
+      // ABOUT
+      function renderAbout() {
+        var p = state.profile;
+        var el = document.getElementById('about-content-display');
+        el.textContent = p.fullBio || 'No bio added yet. Admin can click Edit to add one.';
+        el.style.fontStyle = p.fullBio ? 'normal' : 'italic';
+        el.style.color = p.fullBio ? 'var(--text)' : 'var(--muted)';
+        renderInterests();
+        applyPhoto();
+      }
+      function toggleAboutEdit(on) {
+        document.getElementById('about-view-mode').style.display = on ? 'none' : 'block';
+        document.getElementById('about-edit-mode').style.display = on ? 'block' : 'none';
+        if (on) {
+          var p = state.profile;
+          document.getElementById('edit-fullname').value = p.fullname;
+          document.getElementById('edit-title').value = p.title;
+          document.getElementById('edit-email').value = p.email;
+          document.getElementById('edit-short-bio').value = p.shortBio;
+          document.getElementById('edit-full-bio').value = p.fullBio;
+          document.getElementById('edit-years').value = p.years;
+        }
+      }
+      function saveAbout() {
+        var p = state.profile;
+        p.fullname = document.getElementById('edit-fullname').value || p.fullname;
+        p.title = document.getElementById('edit-title').value || p.title;
+        p.email = document.getElementById('edit-email').value || p.email;
+        p.shortBio = document.getElementById('edit-short-bio').value || p.shortBio;
+        p.fullBio = document.getElementById('edit-full-bio').value;
+        p.years = document.getElementById('edit-years').value || p.years;
+        var parts = p.fullname.replace(/^Dr\.?\s*/i, '').trim().split(' ');
+        p.firstname = parts[0] || 'Alan';
+        p.lastname = parts.slice(1).join(' ') || 'Carter';
+        saveState();
+        applyProfileToUI();
+        toggleAboutEdit(false);
+        renderAbout();
+        showToast('Bio saved!');
+      }
+      function applyProfileToUI() {
+        var p = state.profile;
+        var elFirstname = document.getElementById('hero-firstname');
+        if (elFirstname) elFirstname.textContent = p.firstname;
+        var elLastname = document.getElementById('hero-lastname');
+        if (elLastname) elLastname.textContent = p.lastname;
+
+        const highlightText = function (text) {
+          if (!text) return '';
+          return text.replace(/\b(Mathematics|University of Westbridge|University|PDEs|Calculus|Algebra|Geometry|Math)\b/gi, '<span class="blue-glow">$&</span>');
+        };
+
+        var elTitle = document.getElementById('hero-title-display');
+        if (elTitle) elTitle.innerHTML = highlightText(p.title);
+        var elShortBio = document.getElementById('hero-short-bio');
+        if (elShortBio) elShortBio.innerHTML = highlightText(p.shortBio);
+        var elFullname = document.getElementById('card-fullname');
+        if (elFullname) elFullname.textContent = p.fullname;
+        var elEmail = document.getElementById('card-email');
+        if (elEmail) elEmail.textContent = p.email;
+        var elYears = document.getElementById('stat-years');
+        if (elYears) elYears.textContent = p.years;
+        var elEmailDisplay = document.getElementById('c-email-display');
+        if (elEmailDisplay) elEmailDisplay.textContent = p.email;
+      }
+
+      // INTERESTS
+      function renderInterests() {
+        var wrap = document.getElementById('interests-wrap');
+        wrap.innerHTML = '';
+        (state.profile.interests || []).forEach(function (tag, i) {
+          var el = document.createElement('div');
+          el.className = 'interest-tag';
+          el.style.cursor = isAdmin ? 'pointer' : 'default';
+          el.innerHTML = tag + (isAdmin ? ' <span style="color:var(--red);margin-left:.3rem" title="Remove">×</span>' : '');
+          if (isAdmin) {
+            (function (idx) { el.querySelector('span').onclick = function () { removeInterest(idx); }; })(i);
+          }
+          wrap.appendChild(el);
+        });
+      }
+      function openInterestModal() { openModal('interest-modal'); }
+      function saveInterest() {
+        var val = document.getElementById('interest-input').value.trim();
+        if (!val) return;
+        state.profile.interests.push(val);
+        saveState(); renderInterests();
+        document.getElementById('interest-input').value = '';
+        closeModal('interest-modal');
+        showToast('Tag added!');
+      }
+      function removeInterest(i) {
+        state.profile.interests.splice(i, 1);
+        saveState(); renderInterests();
+      }
+
+      // RESEARCH
+      var editingResearchId = null;
+
+      function handleResearchTypeChange() {
+        var type = document.getElementById('r-type').value;
+        var g1 = document.getElementById('research-group-1');
+        var g2 = document.getElementById('research-group-2');
+        var g3 = document.getElementById('research-group-3');
+
+        g1.style.display = 'none';
+        g2.style.display = 'none';
+        g3.style.display = 'none';
+
+        if (type === 'Journal Paper' || type === 'Book Chapter' || type === 'Project') {
+          g1.style.display = 'block';
+        } else if (type === 'Paper Presentation' || type === 'Conference Paper') {
+          g2.style.display = 'block';
+        } else if (type === 'Participation') {
+          g3.style.display = 'block';
+        }
+      }
+
+      function openResearchModal(id) {
+        editingResearchId = id || null;
+        var r = id ? state.research.find(function (x) { return x.id === id; }) : null;
+        document.getElementById('research-modal-title').textContent = r ? 'Edit Publication' : 'Add Publication / Project';
+
+        document.getElementById('r-type').value = r ? r.type : '';
+
+        document.getElementById('r-paper-title').value = '';
+        document.getElementById('r-authors-g1').value = '';
+        document.getElementById('r-journal-name').value = '';
+        document.getElementById('r-month-year').value = '';
+        document.getElementById('r-volume-issue').value = '';
+        document.getElementById('r-page-number').value = '';
+        document.getElementById('r-doi').value = '';
+        document.getElementById('r-abstract').value = '';
+
+        document.getElementById('r-title-g2').value = '';
+        document.getElementById('r-conference-name').value = '';
+        document.getElementById('r-conference-date').value = '';
+        document.getElementById('r-organized-by').value = '';
+        document.getElementById('r-certificate').value = '';
+        document.getElementById('cert-label').textContent = '';
+
+        document.getElementById('r-participation-type').value = 'Conference';
+        document.getElementById('r-title-g3').value = '';
+        document.getElementById('r-date-g3').value = '';
+        document.getElementById('r-organized-by-g3').value = '';
+        document.getElementById('r-certificate-g3').value = '';
+        document.getElementById('cert-label-g3').textContent = '';
+
+        if (r) {
+          if (r.type === 'Journal Paper' || r.type === 'Book Chapter' || r.type === 'Project') {
+            document.getElementById('r-paper-title').value = r.title || '';
+            document.getElementById('r-authors-g1').value = r.authors || '';
+            document.getElementById('r-journal-name').value = r.journal || '';
+            document.getElementById('r-month-year').value = r.monthYear || r.year || '';
+            document.getElementById('r-volume-issue').value = r.volumeIssue || '';
+            document.getElementById('r-page-number').value = r.pageNumber || '';
+            document.getElementById('r-doi').value = r.doi || '';
+            document.getElementById('r-abstract').value = r.abstract || r.desc || '';
+          } else if (r.type === 'Paper Presentation' || r.type === 'Conference Paper') {
+            document.getElementById('r-title-g2').value = r.title || '';
+            document.getElementById('r-conference-name').value = r.conferenceName || '';
+            document.getElementById('r-conference-date').value = r.conferenceDate || '';
+            document.getElementById('r-organized-by').value = r.organizedBy || '';
+          } else if (r.type === 'Participation') {
+            document.getElementById('r-participation-type').value = r.participationType || 'Conference';
+            document.getElementById('r-title-g3').value = r.title || '';
+            document.getElementById('r-date-g3').value = r.date || '';
+            document.getElementById('r-organized-by-g3').value = r.organizedBy || '';
+          }
+        }
+
+        handleResearchTypeChange();
+        openModal('research-modal');
+      }
+
+      async function saveResearch() {
+        var type = document.getElementById('r-type').value;
+        if (!type) return showToast('Please select a type');
+
+        var title = '';
+        var details = {};
+
+        if (type === 'Journal Paper' || type === 'Book Chapter' || type === 'Project') {
+          title = document.getElementById('r-paper-title').value.trim();
+          details = {
+            authors: document.getElementById('r-authors-g1').value,
+            journal: document.getElementById('r-journal-name').value,
+            monthYear: document.getElementById('r-month-year').value,
+            volumeIssue: document.getElementById('r-volume-issue').value,
+            pageNumber: document.getElementById('r-page-number').value,
+            doi: document.getElementById('r-doi').value,
+            abstract: document.getElementById('r-abstract').value
+          };
+        } else if (type === 'Paper Presentation' || type === 'Conference Paper') {
+          title = document.getElementById('r-title-g2').value.trim();
+          details = {
+            conferenceName: document.getElementById('r-conference-name').value,
+            conferenceDate: document.getElementById('r-conference-date').value,
+            organizedBy: document.getElementById('r-organized-by').value
+          };
+          var certFile = document.getElementById('r-certificate').files[0];
+          if (certFile) {
+            var formData = new FormData();
+            formData.append('file', certFile);
+            try {
+              showToast('Uploading certificate...');
+              const res = await fetch(API_URL + '/upload', { method: 'POST', body: formData });
+              const data = await res.json();
+              if (data.success) {
+                details.certificateUrl = data.fileUrl;
+              }
+            } catch (e) {
+              console.error('Cert upload failed', e);
+            }
+          }
+        } else if (type === 'Participation') {
+          title = document.getElementById('r-title-g3').value.trim();
+          details = {
+            participationType: document.getElementById('r-participation-type').value,
+            date: document.getElementById('r-date-g3').value,
+            organizedBy: document.getElementById('r-organized-by-g3').value
+          };
+          var certFile = document.getElementById('r-certificate-g3').files[0];
+          if (certFile) {
+            var formData = new FormData();
+            formData.append('file', certFile);
+            try {
+              showToast('Uploading certificate...');
+              const res = await fetch(API_URL + '/upload', { method: 'POST', body: formData });
+              const data = await res.json();
+              if (data.success) {
+                details.certificateUrl = data.fileUrl;
+              }
+            } catch (e) {
+              console.error('Cert upload failed', e);
+            }
+          }
+        }
+
+        if (!title) return showToast('Please enter a title');
+
+        if (editingResearchId) {
+          var existing = state.research.find(function (x) { return x.id === editingResearchId; });
+          if (existing && existing.certificateUrl && !details.certificateUrl) {
+            details.certificateUrl = existing.certificateUrl;
+          }
+        }
+
+        var item = {
+          id: editingResearchId || Date.now().toString(),
+          type: type,
+          title: title
+        };
+
+        for (var key in details) {
+          item[key] = details[key];
+        }
+
+        item.year = details.monthYear || details.conferenceDate || details.date ? (details.date ? details.date.substring(0, 4) : (details.conferenceDate ? details.conferenceDate.substring(0, 4) : details.monthYear)) : new Date().getFullYear();
+        item.desc = details.abstract || details.conferenceName || details.participationType || '';
+        item.authors = details.authors || '';
+        if (!item.journal && details.organizedBy) item.journal = details.organizedBy;
+
+        if (editingResearchId) {
+          var idx = state.research.findIndex(function (x) { return x.id === editingResearchId; });
+          state.research[idx] = item;
+        } else { state.research.unshift(item); }
+
+        saveState(); updateStats(); renderResearch();
+        closeModal('research-modal');
+        showToast(editingResearchId ? 'Publication updated!' : 'Publication added!');
+      }
+      function deleteResearch(id) {
+        if (!confirm('Delete this publication?')) return;
+        state.research = state.research.filter(function (x) { return x.id !== id; });
+        saveState(); updateStats(); renderResearch();
+        showToast('Deleted');
+      }
+      function renderResearch() {
+        var grid = document.getElementById('research-grid');
+        if (!state.research.length) {
+          grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>';
+          return;
+        }
+
+        var sortOrder = document.getElementById('research-sort') ? document.getElementById('research-sort').value : 'new-to-old';
+        var sortedResearch = state.research.slice().sort(function (a, b) {
+          var yearA = parseInt(a.year) || 0;
+          if (a.year && String(a.year).match(/\b\d{4}\b/)) { yearA = parseInt(String(a.year).match(/\b\d{4}\b/)[0]); }
+          var yearB = parseInt(b.year) || 0;
+          if (b.year && String(b.year).match(/\b\d{4}\b/)) { yearB = parseInt(String(b.year).match(/\b\d{4}\b/)[0]); }
+          if (sortOrder === 'new-to-old') return yearB - yearA;
+          return yearA - yearB;
+        });
+
+        var html = '<table class="research-table"><thead><tr>'
+          + '<th>Year</th>'
+          + '<th>Type</th>'
+          + '<th>Details</th>'
+          + '<th>Venue &amp; Authors</th>'
+          + '<th class="rt-actions-head">Actions</th>'
+          + '</tr></thead><tbody>';
+
+        html += sortedResearch.map(function (r) {
+          var detailText = r.abstract ? r.abstract : (r.conferenceName ? 'Conference: ' + r.conferenceName : (r.desc || ''));
+          var venue = r.journal || r.organizedBy || '';
+          return '<tr>'
+            + '<td><div class="rc-year">' + (r.year || '') + '</div></td>'
+            + '<td><div class="rc-type">' + r.type + '</div></td>'
+            + '<td>'
+            + '<div class="rt-title">' + (r.title || 'Participation') + '</div>'
+            + '<div class="rt-desc">' + detailText + '</div>'
+            + '</td>'
+            + '<td><div class="rc-journal">' + venue + (r.authors ? ' &middot; ' + r.authors : '') + '</div>'
+            + (r.certificateUrl ? '<div style="margin-top:0.5rem"><a href="' + r.certificateUrl + '" target="_blank" style="color:var(--amber);font-size:0.8rem;text-decoration:underline;">View Certificate</a></div>' : '')
+            + '</td>'
+            + '<td class="rt-actions-cell">'
+            + '<div class="rt-actions">'
+            + '<button class="btn btn-ghost btn-sm" onclick="openResearchModal(\'' + r.id + '\')">✏️</button>'
+            + '<button class="btn btn-danger btn-sm" onclick="deleteResearch(\'' + r.id + '\')">🗑</button>'
+            + '</div></td></tr>';
+        }).join('');
+        html += '</tbody></table>';
+        grid.innerHTML = html;
+      }
+
+      // COURSES
+      var currentCourseId = null;
+      function openAddCourseModal() {
+        var cCodeEl = document.getElementById('c-code');
+        if (cCodeEl) cCodeEl.value = '';
+        document.getElementById('c-name').value = '';
+        document.getElementById('c-desc').value = '';
+        openModal('course-modal');
+      }
+      function saveCourse() {
+        var name = document.getElementById('c-name').value.trim();
+        if (!name) return showToast('Enter course name');
+        state.courses.push({ id: Date.now().toString(), code: '', name: name, desc: document.getElementById('c-desc').value, topics: [] });
+        saveState(); updateStats(); renderCourses();
+        closeModal('course-modal');
+        showToast('Course created!');
+      }
+      function deleteCourse(id) {
+        if (!confirm('Delete this course and all its notes?')) return;
+        state.courses = state.courses.filter(function (x) { return x.id !== id; });
+        saveState(); updateStats(); renderCourses();
+        showToast('Course deleted');
+      }
+      function renderCourses() {
+        var grid = document.getElementById('courses-grid');
+        if (!state.courses.length) {
+          grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>No courses added yet.</p></div>';
+          return;
+        }
+        grid.innerHTML = state.courses.map(function (c) {
+          var noteCount = c.topics.reduce(function (a, t) { return a + t.notes.length; }, 0);
+          return '<div class="course-tile" onclick="openCourse(\'' + c.id + '\')">'
+            + '<div class="ct-actions" onclick="event.stopPropagation()">'
+            + '<button class="btn btn-danger btn-sm" onclick="deleteCourse(\'' + c.id + '\')">🗑</button>'
+            + '</div>'
+            + '<div class="ct-name">' + c.name + '</div>'
+            + '<div class="ct-count">' + c.topics.length + ' topic' + (c.topics.length !== 1 ? 's' : '') + ' · ' + noteCount + ' file' + (noteCount !== 1 ? 's' : '') + '</div>'
+            + '</div>';
+        }).join('');
+      }
+
+      // COURSE DETAIL
+      function openCourse(id) {
+        currentCourseId = id;
+        var course = state.courses.find(function (c) { return c.id === id; });
+        var codeEl = document.getElementById('detail-course-code');
+        if (codeEl) codeEl.textContent = course.code || '';
+        document.getElementById('detail-course-name').textContent = course.name;
+        document.getElementById('courses-list-view').style.display = 'none';
+        document.getElementById('course-detail').style.display = 'block';
+        renderTopics();
+      }
+      function backToCourses() {
+        currentCourseId = null;
+        document.getElementById('courses-list-view').style.display = 'block';
+        document.getElementById('course-detail').style.display = 'none';
+      }
+      function openAddTopicModal() {
+        document.getElementById('t-name').value = '';
+        openModal('topic-modal');
+      }
+      function saveTopic() {
+        var name = document.getElementById('t-name').value.trim();
+        if (!name) return showToast('Enter topic name');
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        course.topics.push({ id: Date.now().toString(), name: name, notes: [] });
+        saveState(); renderTopics();
+        closeModal('topic-modal');
+        showToast('Topic added!');
+      }
+      function deleteTopic(topicId) {
+        if (!confirm('Delete this topic?')) return;
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        course.topics = course.topics.filter(function (t) { return t.id !== topicId; });
+        saveState(); renderTopics();
+        showToast('Topic deleted');
+      }
+
+      // ── KEY FIX: renderTopics uses plain string concat, NO nested backticks ──
+      function fileIcon(type) {
+        if (!type) return '📄';
+        if (type.indexOf('pdf') !== -1) return '📕';
+        if (type.indexOf('image') !== -1) return '🖼️';
+        if (type.indexOf('word') !== -1 || type.indexOf('doc') !== -1) return '📝';
+        if (type.indexOf('sheet') !== -1 || type.indexOf('excel') !== -1 || type.indexOf('csv') !== -1) return '📊';
+        if (type.indexOf('zip') !== -1 || type.indexOf('rar') !== -1) return '📦';
+        return '📄';
+      }
+
+      function buildNoteHTML(t, n) {
+        var isPdf = n.type && n.type.indexOf('pdf') !== -1;
+        var previewBtn = isPdf
+          ? '<button class="note-preview-btn" onclick="previewNote(\'' + t.id + '\',\'' + n.id + '\')">👁 Preview</button>'
+          : '';
+        return '<div class="note-item">'
+          + '<div class="note-item-left">'
+          + '<span class="note-file-icon">' + fileIcon(n.type) + '</span>'
+          + '<div>'
+          + '<div class="note-file-name">' + n.title + '</div>'
+          + '<div class="note-file-size">' + n.filename + ' · ' + n.size + '</div>'
+          + '</div></div>'
+          + '<div class="note-item-right">'
+          + previewBtn
+          + '<button class="note-download-btn" onclick="downloadNote(\'' + t.id + '\',\'' + n.id + '\')">↓ Download</button>'
+          + '<button class="note-delete-btn" onclick="deleteNote(\'' + t.id + '\',\'' + n.id + '\')">🗑 Delete</button>'
+          + '</div></div>';
+      }
+
+      function renderTopics() {
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        var list = document.getElementById('topics-list');
+        if (!course.topics.length) {
+          list.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No topics yet. Add a topic to get started.</p></div>';
+          return;
+        }
+        var html = '';
+        course.topics.forEach(function (t) {
+          var notesHTML = '';
+          if (t.notes.length) {
+            t.notes.forEach(function (n) { notesHTML += buildNoteHTML(t, n); });
+          } else {
+            notesHTML = '<div style="color:var(--muted);font-size:.85rem;padding:.5rem 0">No notes uploaded yet.</div>';
+          }
+          html += '<div class="topic-section" id="topic-' + t.id + '">'
+            + '<div class="topic-header" onclick="toggleTopic(\'' + t.id + '\')">'
+            + '<div class="topic-title-row">'
+            + '<span class="topic-icon">📁</span>'
+            + '<span class="topic-name">' + t.name + '</span>'
+            + '<span class="topic-count">' + t.notes.length + ' file' + (t.notes.length !== 1 ? 's' : '') + '</span>'
+            + '</div><span class="topic-chevron">▼</span></div>'
+            + '<div class="topic-body">'
+            + '<div class="notes-list">' + notesHTML + '</div>'
+            + '<div class="topic-admin-row">'
+            + '<button class="btn btn-outline btn-sm" onclick="openNoteModal(\'' + t.id + '\')">+ Upload Notes</button>'
+            + '<button class="btn btn-danger btn-sm" onclick="deleteTopic(\'' + t.id + '\')">🗑 Delete Topic</button>'
+            + '</div></div></div>';
+        });
+        list.innerHTML = html;
+      }
+
+      function toggleTopic(id) {
+        document.getElementById('topic-' + id).classList.toggle('open');
+      }
+
+      // NOTES
+      var currentTopicId = null;
+      function openNoteModal(topicId) {
+        currentTopicId = topicId;
+        document.getElementById('n-title').value = '';
+        document.getElementById('n-file').value = '';
+        document.getElementById('file-label').textContent = '';
+        openModal('note-modal');
+      }
+      function updateFileLabel() {
+        var f = document.getElementById('n-file').files[0];
+        document.getElementById('file-label').textContent = f ? '✓ ' + f.name : '';
+      }
+      // NOTE UPLOAD
+      async function saveNote() {
+        var title = document.getElementById('n-title').value.trim();
+        var file = document.getElementById('n-file').files[0];
+        if (!title) return showToast('Enter a note title');
+        if (!file) return showToast('Please select a file');
+
+        var formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          showToast('Uploading file...');
+          const res = await fetch(API_URL + '/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+            var topic = course.topics.find(function (t) { return t.id === currentTopicId; });
+            topic.notes.push({
+              id: Date.now().toString(),
+              title: title,
+              filename: file.name,
+              size: formatSize(file.size),
+              type: file.type,
+              data: data.fileUrl // Store the URL generated by the backend
+            });
+            await saveState();
+            renderTopics();
+            setTimeout(function () {
+              var el = document.getElementById('topic-' + currentTopicId);
+              if (el) el.classList.add('open');
+            }, 50);
+            closeModal('note-modal');
+            showToast('Note uploaded to server!');
+          } else {
+            showToast('Error uploading file');
+          }
+        } catch (err) {
+          showToast('Upload failed');
+        }
+      }
+      function deleteNote(topicId, noteId) {
+        if (!confirm('Delete this note?')) return;
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        var topic = course.topics.find(function (t) { return t.id === topicId; });
+        topic.notes = topic.notes.filter(function (n) { return n.id !== noteId; });
+        saveState();
+        renderTopics();
+        setTimeout(function () {
+          var el = document.getElementById('topic-' + topicId);
+          if (el) el.classList.add('open');
+        }, 50);
+        showToast('Deleted');
+      }
+
+      // ── DOWNLOAD: base64 → Blob → object URL (works for all file types) ──
+      function downloadNote(topicId, noteId) {
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        var topic = course.topics.find(function (t) { return t.id === topicId; });
+        var note = topic.notes.find(function (n) { return n.id === noteId; });
+
+        // If it's a blob/object URL or already a base64 string
+        var a = document.createElement('a');
+        a.href = note.data;
+        a.download = note.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Downloading ' + note.filename + ' ↓');
+      }
+
+      // ── PREVIEW: open PDF in new tab ──
+      function previewNote(topicId, noteId) {
+        var course = state.courses.find(function (c) { return c.id === currentCourseId; });
+        var topic = course.topics.find(function (t) { return t.id === topicId; });
+        var note = topic.notes.find(function (n) { return n.id === noteId; });
+        window.open(note.data, '_blank');
+      }
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+      }
+
+      // STATS
+      function updateStats() {
+        var pubsEl = document.getElementById('stat-pubs');
+        if (pubsEl) pubsEl.textContent = state.research.length;
+        var coursesEl = document.getElementById('stat-courses');
+        if (coursesEl) coursesEl.textContent = state.courses.length;
+      }
+
+      // TOAST
+      function showToast(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(function () { t.classList.remove('show'); }, 2500);
+      }
+
+      // THEME
+      function toggleTheme() {
+        var current = document.documentElement.getAttribute('data-theme') || 'dark';
+        var target = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', target);
+        try { localStorage.setItem('profPortalTheme', target); } catch (e) { }
+      }
+
+      // INBOX & MESSAGES
+      async function submitMessage() {
+        var name = document.getElementById('contact-name').value.trim();
+        var email = document.getElementById('contact-email').value.trim();
+        var subject = document.getElementById('contact-subject').value.trim();
+        var message = document.getElementById('contact-message').value.trim();
+
+        if (!name || !email || !message) return showToast('Please fill out all required fields');
+
+        try {
+          const res = await fetch(API_URL + '/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
+          });
+          if (res.ok) {
+            showToast('Message sent! ✉️');
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-email').value = '';
+            document.getElementById('contact-subject').value = '';
+            document.getElementById('contact-message').value = '';
+          } else {
+            showToast('Failed to send message');
+          }
+        } catch (err) {
+          showToast('Network error');
+        }
+      }
+
+      async function openInboxModal() {
+        openModal('inbox-modal');
+        document.getElementById('inbox-list').innerHTML = '<p class="empty-state">Loading messages...</p>';
+        try {
+          const res = await fetch(API_URL + '/messages');
+          if (res.ok) {
+            const messages = await res.json();
+            if (messages.length === 0) {
+              document.getElementById('inbox-list').innerHTML = '<p class="empty-state">No student queries yet.</p>';
+            } else {
+              document.getElementById('inbox-list').innerHTML = messages.map(function (m) {
+                var date = new Date(m.createdAt).toLocaleString();
+                return '<div class="message-card">'
+                  + '<div class="message-card-header">'
+                  + '<div>'
+                  + '<div class="message-card-title">' + (m.subject || 'No Subject') + '</div>'
+                  + '<div class="message-card-email">' + m.name + ' (' + m.email + ')</div>'
+                  + '</div>'
+                  + '<div class="message-card-date">' + date + '</div>'
+                  + '</div>'
+                  + '<div class="message-card-body">' + m.message + '</div>'
+                  + '</div>';
+              }).join('');
+            }
+          } else {
+            document.getElementById('inbox-list').innerHTML = '<p class="empty-state">Failed to load messages.</p>';
+          }
+        } catch (e) {
+          document.getElementById('inbox-list').innerHTML = '<p class="empty-state" style="color:var(--red)">Network error.</p>';
+        }
+      }
+
+      // MATH UNIVERSE BIG BANG ANIMATION
+      const starsCanvas = document.getElementById("stars");
+      const starsCtx = starsCanvas.getContext("2d");
+      const bgSymbols = ["∑", "∫", "π", "√", "∞", "x²", "sin", "cos", "tan", "log"];
+
+      let bbParticles = [];
+      let bbPhase = "collapse"; // collapse -> explosion -> drift
+      let bgStars = [];
+      let bbMouseX = 0;
+
+      class Particle {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.angle = Math.random() * Math.PI * 2;
+          this.speed = Math.random() * 6 + 2;
+          this.vx = Math.cos(this.angle) * this.speed;
+          this.vy = Math.sin(this.angle) * this.speed;
+          this.size = Math.random() * 18 + 10;
+          this.text = bgSymbols[Math.floor(Math.random() * bgSymbols.length)];
+          this.alpha = 1;
+        }
+        update() {
+          if (bbPhase === "explosion") {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.alpha -= 0.003;
+          } else if (bbPhase === "drift") {
+            this.y += 0.5;
+            this.x += bbMouseX * 10; // parallax modifier
+
+            // Repulsion to prevent overlapping equations
+            bbParticles.forEach(other => {
+              if (other === this) return;
+              let dx = this.x - other.x;
+              let dy = this.y - other.y;
+              let distSq = dx * dx + dy * dy;
+              if (distSq < 2500 && distSq > 0.1) { // 50px repulsion radius
+                let dist = Math.sqrt(distSq);
+                let force = (50 - dist) / 50;
+                this.x += (dx / dist) * force * 0.5;
+                this.y += (dy / dist) * force * 0.5;
+              }
+            });
+
+            if (this.alpha < 0.6) this.alpha += 0.005; // slowly recover visibility
+
+            // wrap around screen maintaining universe infinity
+            if (this.y > starsCanvas.height + 30) {
+              this.y = -30;
+              this.x = Math.random() * starsCanvas.width;
+            }
+            if (this.x > starsCanvas.width + 30) this.x = -30;
+            if (this.x < -30) this.x = starsCanvas.width + 30;
+          }
+        }
+        draw(currentTheme) {
+          starsCtx.save();
+          if (currentTheme === 'light') {
+            starsCtx.globalAlpha = Math.max(0, this.alpha) * 0.15;
+            starsCtx.fillStyle = "#4da6ff";
+            starsCtx.shadowBlur = 0;
+            starsCtx.filter = "blur(0.5px)";
+          } else {
+            starsCtx.globalAlpha = Math.max(0, this.alpha);
+            starsCtx.fillStyle = "rgba(0,150,255,1)";
+            starsCtx.shadowBlur = 20;
+            starsCtx.shadowColor = "#00f";
+          }
+          starsCtx.font = this.size + "px Outfit";
+          starsCtx.fillText(this.text, this.x, this.y);
+          starsCtx.restore();
+        }
+      }
+
+      function initMapUniverse() {
+        starsCanvas.width = window.innerWidth;
+        starsCanvas.height = window.innerHeight;
+
+        // Stars
+        bgStars = [];
+        for (let i = 0; i < 300; i++) {
+          bgStars.push({
+            x: Math.random() * starsCanvas.width,
+            y: Math.random() * starsCanvas.height,
+            size: Math.random() * 2,
+            speed: Math.random() * 0.5
+          });
+        }
+
+        // Core Particles
+        bbParticles = [];
+        bbPhase = "collapse";
+        for (let i = 0; i < 60; i++) {
+          let offsetX = (Math.random() - 0.5) * 10;
+          let offsetY = (Math.random() - 0.5) * 10;
+          bbParticles.push(new Particle(starsCanvas.width / 2 + offsetX, starsCanvas.height / 2 + offsetY));
+        }
+
+        // Timeline
+        setTimeout(() => { bbPhase = "explosion"; }, 2000);
+        setTimeout(() => { bbPhase = "drift"; }, 5000);
+      }
+
+      function animateMathUniverse() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+        // Cinematic blur trailing
+        starsCtx.fillStyle = currentTheme === 'light' ? "rgba(250, 249, 247, 0.2)" : "rgba(11, 15, 26, 0.2)";
+        starsCtx.fillRect(0, 0, starsCanvas.width, starsCanvas.height);
+
+        // Draw background stars
+        starsCtx.fillStyle = currentTheme === 'light' ? "rgba(0,0,0,0.5)" : "white";
+        bgStars.forEach(s => {
+          if (bbPhase === "explosion") {
+            s.y += s.speed * 4; // stars fly faster during explosion shockwave
+          } else {
+            s.y += s.speed;
+          }
+          s.x += bbMouseX * 5; // parallax modifier for stars
+
+          if (s.y > starsCanvas.height) s.y = 0;
+          if (s.x > starsCanvas.width) s.x = 0;
+          if (s.x < 0) s.x = starsCanvas.width;
+
+          starsCtx.beginPath();
+          starsCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          starsCtx.fill();
+        });
+
+        // Draw equations
+        bbParticles.forEach(p => {
+          p.update();
+          p.draw(currentTheme);
+        });
+
+        requestAnimationFrame(animateMathUniverse);
+      }
+
+      document.addEventListener("mousemove", (e) => {
+        bbMouseX = (e.clientX - starsCanvas.width / 2) * 0.0001;
+      });
+
+      window.addEventListener("resize", () => {
+        starsCanvas.width = window.innerWidth;
+        starsCanvas.height = window.innerHeight;
+      });
+
+      // INIT
+      function init() {
+        var savedTheme = 'dark';
+        try { savedTheme = localStorage.getItem('profPortalTheme') || 'dark'; } catch (e) { }
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        applyProfileToUI();
+        applyPhoto();
+        renderInterests();
+        updateStats();
+
+        initMapUniverse();
+        animateMathUniverse();
+      }
+    </script>
+  </div>
 </body>
+
 </html>

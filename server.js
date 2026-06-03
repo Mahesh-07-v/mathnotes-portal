@@ -5,6 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI)
@@ -19,6 +20,16 @@ const StateSchema = new mongoose.Schema({
 });
 
 const State = mongoose.model('State', StateSchema);
+
+const MessageSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  subject: String,
+  message: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Message = mongoose.model('Message', MessageSchema);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -100,6 +111,58 @@ app.post('/api/state', async (req, res) => {
   } catch (error) {
     console.error("Error saving state:", error);
     res.status(500).json({ success: false });
+  }
+});
+
+// API: Submit a contact message
+app.post('/api/messages', async (req, res) => {
+  try {
+    const newMessage = await Message.create(req.body);
+
+    // Send email notification to Admin
+    try {
+      if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+          replyTo: req.body.email,
+          subject: `New Student Query: ${req.body.subject}`,
+          text: `You have received a new query from ${req.body.name} (${req.body.email}).\n\nSubject: ${req.body.subject}\n\nMessage:\n${req.body.message}`
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log('Email notification sent successfully');
+      } else {
+        console.warn('Email credentials not set in .env file. Email notification skipped.');
+      }
+    } catch (emailError) {
+      console.error('Error sending email notification:', emailError);
+      // We still return success: true because the DB save was successful
+    }
+
+    res.json({ success: true, message: newMessage });
+  } catch (error) {
+    console.error("Error saving message:", error);
+    res.status(500).json({ success: false });
+  }
+});
+
+// API: Get all contact messages (Admin Only normally, but simplistic here)
+app.get('/api/messages', async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json([]);
   }
 });
 
