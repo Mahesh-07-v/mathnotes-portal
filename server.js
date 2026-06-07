@@ -77,6 +77,7 @@ const defaultState = {
     fullname: 'Dr. Alan Carter', firstname: 'Alan', lastname: 'Carter',
     title: 'Associate Professor · University of Westbridge',
     email: 'alan.carter@westbridge.edu',
+    phone: '+1 (555) 019-2834',
     shortBio: 'Passionate about making mathematics beautiful, accessible, and alive. My door is always open.',
     fullBio: '', years: '14', photo: null,
     interests: ['PDEs', 'Topology', 'Fluid Dynamics'],

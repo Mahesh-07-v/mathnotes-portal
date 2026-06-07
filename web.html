@@ -638,6 +638,58 @@
       display: inline-flex
     }
 
+    .research-tabs-wrapper {
+      margin: 1.5rem 0;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .research-tabs {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.35rem;
+      gap: 0.25rem;
+      min-width: max-content;
+    }
+
+    [data-theme="light"] .research-tabs {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .research-tab {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .research-tab:hover {
+      color: var(--amber);
+      background: rgba(245, 185, 66, 0.05);
+    }
+
+    .research-tab.active {
+      color: #000;
+      background: var(--amber);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(245, 185, 66, 0.25);
+    }
+
+    [data-theme="light"] .research-tab.active {
+      color: #fff;
+      background: var(--amber);
+      box-shadow: 0 4px 12px rgba(212, 160, 23, 0.2);
+    }
+
     .research-grid {
       display: block;
       width: 100%;
@@ -1464,6 +1516,117 @@
 
       max-width:500px;
     }
+
+    /* Floating Contact Overlay */
+    .contact-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .contact-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .contact-popover-card {
+      background: rgba(21, 26, 40, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 400px;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                  0 0 50px rgba(77, 166, 255, 0.15);
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    [data-theme="light"] .contact-popover-card {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    .contact-overlay.active .contact-popover-card {
+      transform: translateY(0);
+    }
+    .contact-popover-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .contact-popover-close:hover {
+      color: var(--amber);
+    }
+    .contact-popover-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .contact-popover-icon {
+      font-size: 2rem;
+    }
+    .contact-popover-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      margin: 0;
+      color: var(--cream);
+    }
+    .contact-popover-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .cii-icon {
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    [data-theme="light"] .cii-icon {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    .cii-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+    .cii-val {
+      font-size: 1rem;
+      color: var(--cream);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .cii-val:hover {
+      color: var(--amber);
+    }
   </style>
 </head>
 
@@ -1601,12 +1764,8 @@
         <li><a onclick="showPage('about')" id="nav-about">About</a></li>
         <li><a onclick="showPage('research')" id="nav-research">Research</a></li>
         <li><a onclick="showPage('notes')" id="nav-notes">Notes</a></li>
-        <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
       </ul>
       <div class="nav-right">
-        <button id="theme-btn" onclick="toggleTheme()"
-          style="background:transparent;border:none;color:var(--amber);cursor:pointer;font-size:1.2rem;margin-right:0.5rem;"
-          title="Toggle Theme">🌓</button>
         <span id="admin-badge">⚡ Admin Mode</span>
         <button id="login-btn" onclick="openLoginModal()">Admin Login</button>
       </div>
@@ -1645,7 +1804,7 @@
                 About Me
               </button>
 
-              <button class="btn btn-outline" onclick="showPage('contact')">
+              <button class="btn btn-outline" onclick="toggleContactOverlay(true)">
                 Contact
               </button>
             </div>
@@ -1699,6 +1858,8 @@
                   placeholder="Associate Professor · University of Westbridge" /></div>
               <div class="modal-field"><label>Email</label><input class="field" id="edit-email"
                   placeholder="alan@university.edu" /></div>
+              <div class="modal-field"><label>Phone Number</label><input class="field" id="edit-phone"
+                  placeholder="+1 (555) 019-2834" /></div>
               <div class="modal-field"><label>Short Bio (shown on homepage)</label><textarea class="field"
                   id="edit-short-bio" rows="2" placeholder="A one-liner about you..."></textarea></div>
               <div class="modal-field"><label>Full Bio</label><textarea class="field" id="edit-full-bio" rows="8"
@@ -1732,6 +1893,17 @@
               <option value="old-to-new">Sort by Year: Old to New</option>
             </select>
             <button class="btn btn-amber add-research-btn" onclick="openResearchModal()">+ Add Publication</button>
+          </div>
+        </div>
+        <div class="research-tabs-wrapper">
+          <div class="research-tabs">
+            <button class="research-tab active" data-tab="All" onclick="selectResearchTab('All')">All</button>
+            <button class="research-tab" data-tab="Journal Paper" onclick="selectResearchTab('Journal Paper')">Journal Paper</button>
+            <button class="research-tab" data-tab="Conference Paper" onclick="selectResearchTab('Conference Paper')">Conference Paper</button>
+            <button class="research-tab" data-tab="Paper Presentation" onclick="selectResearchTab('Paper Presentation')">Paper Presentation</button>
+            <button class="research-tab" data-tab="Participation" onclick="selectResearchTab('Participation')">Participation</button>
+            <button class="research-tab" data-tab="Book Chapter" onclick="selectResearchTab('Book Chapter')">Book Chapter</button>
+            <button class="research-tab" data-tab="Project" onclick="selectResearchTab('Project')">Project</button>
           </div>
         </div>
         <div class="research-grid" id="research-grid">
@@ -1776,63 +1948,28 @@
       </div>
     </div>
 
-    <!-- CONTACT -->
-    <div class="page" id="page-contact">
-      <div class="container">
-        <div style="margin-bottom:2.5rem">
-          <div class="s-tag">Contact</div>
-          <h2 class="s-title">Let's Talk Math</h2>
-          <p class="s-sub">Questions, office hours, research inquiries — my inbox is open.</p>
+    <!-- Floating Contact Overlay -->
+    <div class="contact-overlay" id="contact-popover" onclick="toggleContactOverlay(false)">
+      <div class="contact-popover-card" onclick="event.stopPropagation()">
+        <button class="contact-popover-close" onclick="toggleContactOverlay(false)">×</button>
+        <div class="contact-popover-header">
+          <div class="contact-popover-icon">📞</div>
+          <h3>Contact Information</h3>
         </div>
-        <div class="contact-grid">
-          <div>
-            <div class="contact-card">
-              <div class="ci-icon">📍</div>
-              <div>
-                <div class="ci-label">Office</div>
-                <div class="ci-val" id="c-office">Math Building, Room 214</div>
-              </div>
-            </div>
-            <div class="contact-card">
-              <div class="ci-icon">🕐</div>
-              <div>
-                <div class="ci-label">Office Hours</div>
-                <div class="ci-val" id="c-hours">Mon & Wed 2–4 PM · Fri 10 AM–12 PM</div>
-              </div>
-            </div>
-            <div class="contact-card">
-              <div class="ci-icon">✉️</div>
-              <div>
-                <div class="ci-label">Email</div>
-                <div class="ci-val" id="c-email-display">alan.carter@westbridge.edu</div>
-              </div>
-            </div>
-            <div class="contact-card">
-              <div class="ci-icon">🏛️</div>
-              <div>
-                <div class="ci-label">University</div>
-                <div class="ci-val">University of Westbridge</div>
-              </div>
+        <div class="contact-popover-body">
+          <div class="contact-info-item">
+            <span class="cii-icon">✉️</span>
+            <div>
+              <div class="cii-label">Email</div>
+              <a href="" id="popover-email" class="cii-val">alan.carter@westbridge.edu</a>
             </div>
           </div>
-          <div class="contact-form-wrap">
+          <div class="contact-info-item">
+            <span class="cii-icon">📱</span>
             <div>
-              <div class="form-label">Your Name</div><input id="contact-name" type="text" placeholder="Jane Smith" />
+              <div class="cii-label">Phone</div>
+              <a href="" id="popover-phone" class="cii-val">+1 (555) 019-2834</a>
             </div>
-            <div>
-              <div class="form-label">Email</div><input id="contact-email" type="email"
-                placeholder="jane@student.edu" />
-            </div>
-            <div>
-              <div class="form-label">Subject</div><input id="contact-subject" type="text"
-                placeholder="Question about..." />
-            </div>
-            <div>
-              <div class="form-label">Message</div><textarea id="contact-message"
-                placeholder="Hi Professor, I had a question about..."></textarea>
-            </div>
-            <button class="btn btn-amber" style="width:100%;justify-content:center" onclick="submitMessage()">Send
-              Message</button>
           </div>
         </div>
       </div>
@@ -2048,12 +2185,14 @@
     <script>
       var ADMIN_PASSWORD = 'admin123';
       var isAdmin = false;
+      var currentResearchTab = 'All';
 
       var defaultState = {
         profile: {
           fullname: 'Dr. Alan Carter', firstname: 'Alan', lastname: 'Carter',
           title: 'Associate Professor · University of Westbridge',
           email: 'alan.carter@westbridge.edu',
+          phone: '+1 (555) 019-2834',
           shortBio: 'Passionate about making mathematics beautiful, accessible, and alive. My door is always open.',
           fullBio: '', years: '14', photo: null,
           interests: ['PDEs', 'Topology', 'Fluid Dynamics'],
@@ -2101,14 +2240,42 @@
       boot();
 
       // PAGE NAV
-      function showPage(name) {
+      function showPage(name, pushState) {
+        if (pushState === undefined) pushState = true;
         document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
         document.querySelectorAll('.nav-links a').forEach(function (a) { a.classList.remove('active'); });
-        document.getElementById('page-' + name).classList.add('active');
-        document.getElementById('nav-' + name).classList.add('active');
-        if (name === 'notes') renderCourses();
+        
+        var pageEl = document.getElementById('page-' + name);
+        var navEl = document.getElementById('nav-' + name);
+        if (pageEl) pageEl.classList.add('active');
+        if (navEl) navEl.classList.add('active');
+        
+        if (name === 'notes') {
+          backToCourses(false);
+          renderCourses();
+        }
         if (name === 'research') renderResearch();
         if (name === 'about') renderAbout();
+
+        if (pushState) {
+          history.pushState({ page: name }, "", "#" + name);
+        }
+      }
+
+      function toggleContactOverlay(show) {
+        var popover = document.getElementById('contact-popover');
+        if (!popover) return;
+        if (show) {
+          popover.style.display = 'flex';
+          setTimeout(function() {
+            popover.classList.add('active');
+          }, 10);
+        } else {
+          popover.classList.remove('active');
+          setTimeout(function() {
+            popover.style.display = 'none';
+          }, 300);
+        }
       }
 
       // ADMIN AUTH
@@ -2309,6 +2476,7 @@
           document.getElementById('edit-fullname').value = p.fullname;
           document.getElementById('edit-title').value = p.title;
           document.getElementById('edit-email').value = p.email;
+          document.getElementById('edit-phone').value = p.phone || '';
           document.getElementById('edit-short-bio').value = p.shortBio;
           document.getElementById('edit-full-bio').value = p.fullBio;
           document.getElementById('edit-years').value = p.years;
@@ -2319,6 +2487,7 @@
         p.fullname = document.getElementById('edit-fullname').value || p.fullname;
         p.title = document.getElementById('edit-title').value || p.title;
         p.email = document.getElementById('edit-email').value || p.email;
+        p.phone = document.getElementById('edit-phone').value || p.phone;
         p.shortBio = document.getElementById('edit-short-bio').value || p.shortBio;
         p.fullBio = document.getElementById('edit-full-bio').value;
         p.years = document.getElementById('edit-years').value || p.years;
@@ -2355,6 +2524,17 @@
         if (elYears) elYears.textContent = p.years;
         var elEmailDisplay = document.getElementById('c-email-display');
         if (elEmailDisplay) elEmailDisplay.textContent = p.email;
+
+        var elPopoverEmail = document.getElementById('popover-email');
+        if (elPopoverEmail) {
+          elPopoverEmail.textContent = p.email || '';
+          elPopoverEmail.href = 'mailto:' + (p.email || '');
+        }
+        var elPopoverPhone = document.getElementById('popover-phone');
+        if (elPopoverPhone) {
+          elPopoverPhone.textContent = p.phone || '';
+          elPopoverPhone.href = 'tel:' + (p.phone || '');
+        }
       }
 
       // INTERESTS
@@ -2559,7 +2739,8 @@
           state.research[idx] = item;
         } else { state.research.unshift(item); }
 
-        saveState(); updateStats(); renderResearch();
+        selectResearchTab(type);
+        saveState(); updateStats();
         closeModal('research-modal');
         showToast(editingResearchId ? 'Publication updated!' : 'Publication added!');
       }
@@ -2569,15 +2750,39 @@
         saveState(); updateStats(); renderResearch();
         showToast('Deleted');
       }
+      function selectResearchTab(tabName) {
+        currentResearchTab = tabName;
+        document.querySelectorAll('.research-tab').forEach(function (btn) {
+          if (btn.getAttribute('data-tab') === tabName) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        renderResearch();
+      }
+
       function renderResearch() {
         var grid = document.getElementById('research-grid');
-        if (!state.research.length) {
+        if (!state.research || !state.research.length) {
           grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>No publications added yet.</p></div>';
           return;
         }
 
+        var filteredResearch = state.research;
+        if (currentResearchTab !== 'All') {
+          filteredResearch = state.research.filter(function (r) {
+            return r.type === currentResearchTab;
+          });
+        }
+
+        if (!filteredResearch.length) {
+          grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>No ' + currentResearchTab.toLowerCase() + 's added yet.</p></div>';
+          return;
+        }
+
         var sortOrder = document.getElementById('research-sort') ? document.getElementById('research-sort').value : 'new-to-old';
-        var sortedResearch = state.research.slice().sort(function (a, b) {
+        var sortedResearch = filteredResearch.slice().sort(function (a, b) {
           var yearA = parseInt(a.year) || 0;
           if (a.year && String(a.year).match(/\b\d{4}\b/)) { yearA = parseInt(String(a.year).match(/\b\d{4}\b/)[0]); }
           var yearB = parseInt(b.year) || 0;
@@ -2586,32 +2791,132 @@
           return yearA - yearB;
         });
 
-        var html = '<table class="research-table"><thead><tr>'
-          + '<th>Year</th>'
-          + '<th>Type</th>'
-          + '<th>Details</th>'
-          + '<th>Venue &amp; Authors</th>'
-          + '<th class="rt-actions-head">Actions</th>'
+        var html = '<table class="research-table"><thead><tr>';
+        
+        if (currentResearchTab === 'All') {
+          html += '<th>Year</th>'
+            + '<th>Type</th>'
+            + '<th>Details</th>'
+            + '<th>Venue &amp; Authors</th>';
+        } else if (currentResearchTab === 'Journal Paper') {
+          html += '<th style="width:10%;">Year</th>'
+            + '<th style="width:40%;">Title &amp; DOI</th>'
+            + '<th style="width:20%;">Authors</th>'
+            + '<th style="width:20%;">Journal Name</th>'
+            + '<th style="width:10%;">Vol, Issue &amp; Pages</th>';
+        } else if (currentResearchTab === 'Conference Paper' || currentResearchTab === 'Paper Presentation') {
+          html += '<th style="width:15%;">Date</th>'
+            + '<th style="width:35%;">Title</th>'
+            + '<th style="width:25%;">Conference Name</th>'
+            + '<th style="width:15%;">Organized By</th>'
+            + '<th style="width:10%;">Certificate</th>';
+        } else if (currentResearchTab === 'Participation') {
+          html += '<th style="width:15%;">Date</th>'
+            + '<th style="width:15%;">Type</th>'
+            + '<th style="width:35%;">Title / Topic</th>'
+            + '<th style="width:25%;">Organized By</th>'
+            + '<th style="width:10%;">Certificate</th>';
+        } else if (currentResearchTab === 'Book Chapter') {
+          html += '<th style="width:10%;">Year</th>'
+            + '<th style="width:35%;">Chapter/Book Title</th>'
+            + '<th style="width:20%;">Authors</th>'
+            + '<th style="width:20%;">Book &amp; Publisher</th>'
+            + '<th style="width:15%;">Vol &amp; Pages</th>';
+        } else if (currentResearchTab === 'Project') {
+          html += '<th style="width:15%;">Duration</th>'
+            + '<th style="width:35%;">Project Title</th>'
+            + '<th style="width:20%;">PI / Authors</th>'
+            + '<th style="width:20%;">Funding Agency</th>'
+            + '<th style="width:10%;">Details</th>';
+        }
+
+        html += '<th class="rt-actions-head">Actions</th>'
           + '</tr></thead><tbody>';
 
         html += sortedResearch.map(function (r) {
-          var detailText = r.abstract ? r.abstract : (r.conferenceName ? 'Conference: ' + r.conferenceName : (r.desc || ''));
-          var venue = r.journal || r.organizedBy || '';
-          return '<tr>'
-            + '<td><div class="rc-year">' + (r.year || '') + '</div></td>'
-            + '<td><div class="rc-type">' + r.type + '</div></td>'
-            + '<td>'
-            + '<div class="rt-title">' + (r.title || 'Participation') + '</div>'
-            + '<div class="rt-desc">' + detailText + '</div>'
-            + '</td>'
-            + '<td><div class="rc-journal">' + venue + (r.authors ? ' &middot; ' + r.authors : '') + '</div>'
-            + (r.certificateUrl ? '<div style="margin-top:0.5rem"><a href="' + r.certificateUrl + '" target="_blank" style="color:var(--amber);font-size:0.8rem;text-decoration:underline;">View Certificate</a></div>' : '')
-            + '</td>'
-            + '<td class="rt-actions-cell">'
+          var actionButtons = '<td class="rt-actions-cell">'
             + '<div class="rt-actions">'
             + '<button class="btn btn-ghost btn-sm" onclick="openResearchModal(\'' + r.id + '\')">✏️</button>'
             + '<button class="btn btn-danger btn-sm" onclick="deleteResearch(\'' + r.id + '\')">🗑</button>'
-            + '</div></td></tr>';
+            + '</div></td>';
+
+          if (currentResearchTab === 'All') {
+            var detailText = r.abstract ? r.abstract : (r.conferenceName ? 'Conference: ' + r.conferenceName : (r.desc || ''));
+            var venue = r.journal || r.organizedBy || '';
+            return '<tr>'
+              + '<td><div class="rc-year">' + (r.year || '') + '</div></td>'
+              + '<td><div class="rc-type">' + r.type + '</div></td>'
+              + '<td>'
+              + '<div class="rt-title">' + (r.title || 'Participation') + '</div>'
+              + '<div class="rt-desc">' + detailText + '</div>'
+              + '</td>'
+              + '<td><div class="rc-journal">' + venue + (r.authors ? ' &middot; ' + r.authors : '') + '</div>'
+              + (r.certificateUrl ? '<div style="margin-top:0.5rem"><a href="' + r.certificateUrl + '" target="_blank" style="color:var(--amber);font-size:0.8rem;text-decoration:underline;">View Certificate</a></div>' : '')
+              + '</td>'
+              + actionButtons + '</tr>';
+          }
+          
+          if (currentResearchTab === 'Journal Paper') {
+            var doiHtml = r.doi ? '<div class="rt-doi" style="margin-top:0.3rem; font-size:0.8rem; color:var(--blue)">DOI: <a href="https://doi.org/' + r.doi + '" target="_blank" style="color:var(--blue);text-decoration:underline;">' + r.doi + '</a></div>' : '';
+            var abstractHtml = r.abstract ? '<div class="rt-desc" style="margin-top:0.3rem">' + r.abstract + '</div>' : '';
+            var volIssuePages = [r.volumeIssue, r.pageNumber].filter(Boolean).join(', p. ') || '-';
+            return '<tr>'
+              + '<td><div class="rc-year">' + (r.year || '') + '</div></td>'
+              + '<td><div class="rt-title">' + r.title + '</div>' + doiHtml + abstractHtml + '</td>'
+              + '<td><div class="rc-authors" style="font-size:0.9rem">' + (r.authors || '-') + '</div></td>'
+              + '<td><div class="rc-journal" style="font-weight:500">' + (r.journal || '-') + '</div></td>'
+              + '<td><div class="rc-vol-issue" style="font-size:0.9rem">' + volIssuePages + '</div></td>'
+              + actionButtons + '</tr>';
+          }
+
+          if (currentResearchTab === 'Conference Paper' || currentResearchTab === 'Paper Presentation') {
+            var dateVal = r.conferenceDate || r.year || '';
+            var certLink = r.certificateUrl ? '<a href="' + r.certificateUrl + '" target="_blank" style="color:var(--amber);font-size:0.85rem;text-decoration:underline;display:inline-flex;align-items:center;gap:0.25rem;">📄 View Cert</a>' : '<span style="color:var(--muted);font-size:0.85rem">-</span>';
+            return '<tr>'
+              + '<td><div class="rc-year">' + dateVal + '</div></td>'
+              + '<td><div class="rt-title">' + r.title + '</div></td>'
+              + '<td><div class="rc-conference" style="font-size:0.9rem">' + (r.conferenceName || '-') + '</div></td>'
+              + '<td><div class="rc-organized" style="font-size:0.9rem">' + (r.organizedBy || '-') + '</div></td>'
+              + '<td>' + certLink + '</td>'
+              + actionButtons + '</tr>';
+          }
+
+          if (currentResearchTab === 'Participation') {
+            var dateVal = r.date || r.year || '';
+            var typeVal = r.participationType || 'Conference';
+            var certLink = r.certificateUrl ? '<a href="' + r.certificateUrl + '" target="_blank" style="color:var(--amber);font-size:0.85rem;text-decoration:underline;display:inline-flex;align-items:center;gap:0.25rem;">📄 View Cert</a>' : '<span style="color:var(--muted);font-size:0.85rem">-</span>';
+            return '<tr>'
+              + '<td><div class="rc-year">' + dateVal + '</div></td>'
+              + '<td><div class="rc-type" style="padding:0.2rem 0.6rem; font-size:0.75rem; border-radius:100px; background:rgba(255,255,255,0.05); color:var(--text); border:1px solid var(--border); display:inline-block;">' + typeVal + '</div></td>'
+              + '<td><div class="rt-title">' + r.title + '</div></td>'
+              + '<td><div class="rc-organized" style="font-size:0.9rem">' + (r.organizedBy || '-') + '</div></td>'
+              + '<td>' + certLink + '</td>'
+              + actionButtons + '</tr>';
+          }
+
+          if (currentResearchTab === 'Book Chapter') {
+            var doiHtml = r.doi ? '<div class="rt-doi" style="margin-top:0.3rem; font-size:0.8rem; color:var(--blue)">DOI: <a href="https://doi.org/' + r.doi + '" target="_blank" style="color:var(--blue);text-decoration:underline;">' + r.doi + '</a></div>' : '';
+            var volIssuePages = [r.volumeIssue, r.pageNumber].filter(Boolean).join(', p. ') || '-';
+            return '<tr>'
+              + '<td><div class="rc-year">' + (r.year || '') + '</div></td>'
+              + '<td><div class="rt-title">' + r.title + '</div>' + (r.doi ? doiHtml : '') + '</td>'
+              + '<td><div class="rc-authors" style="font-size:0.9rem">' + (r.authors || '-') + '</div></td>'
+              + '<td><div class="rc-journal" style="font-weight:500">' + (r.journal || '-') + '</div></td>'
+              + '<td><div class="rc-vol-issue" style="font-size:0.9rem">' + volIssuePages + '</div></td>'
+              + actionButtons + '</tr>';
+          }
+
+          if (currentResearchTab === 'Project') {
+            var durationVal = r.monthYear || r.year || '';
+            var abstractHtml = r.abstract ? '<div class="rt-desc" style="margin-top:0.3rem">' + r.abstract + '</div>' : '';
+            return '<tr>'
+              + '<td><div class="rc-year">' + durationVal + '</div></td>'
+              + '<td><div class="rt-title">' + r.title + '</div></td>'
+              + '<td><div class="rc-authors" style="font-size:0.9rem">' + (r.authors || '-') + '</div></td>'
+              + '<td><div class="rc-journal" style="font-weight:500">' + (r.journal || '-') + '</div></td>'
+              + '<td>' + abstractHtml + '</td>'
+              + actionButtons + '</tr>';
+          }
         }).join('');
         html += '</tbody></table>';
         grid.innerHTML = html;
@@ -2659,7 +2964,8 @@
       }
 
       // COURSE DETAIL
-      function openCourse(id) {
+      function openCourse(id, pushState) {
+        if (pushState === undefined) pushState = true;
         currentCourseId = id;
         var course = state.courses.find(function (c) { return c.id === id; });
         var codeEl = document.getElementById('detail-course-code');
@@ -2668,11 +2974,20 @@
         document.getElementById('courses-list-view').style.display = 'none';
         document.getElementById('course-detail').style.display = 'block';
         renderTopics();
+
+        if (pushState) {
+          history.pushState({ page: 'notes', courseId: id }, "", "#notes/course/" + id);
+        }
       }
-      function backToCourses() {
+      function backToCourses(pushState) {
+        if (pushState === undefined) pushState = true;
         currentCourseId = null;
         document.getElementById('courses-list-view').style.display = 'block';
         document.getElementById('course-detail').style.display = 'none';
+
+        if (pushState) {
+          history.pushState({ page: 'notes' }, "", "#notes");
+        }
       }
       function openAddTopicModal() {
         document.getElementById('t-name').value = '';
@@ -2878,13 +3193,7 @@
         setTimeout(function () { t.classList.remove('show'); }, 2500);
       }
 
-      // THEME
-      function toggleTheme() {
-        var current = document.documentElement.getAttribute('data-theme') || 'dark';
-        var target = current === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', target);
-        try { localStorage.setItem('profPortalTheme', target); } catch (e) { }
-      }
+
 
       // INBOX & MESSAGES
       async function submitMessage() {
@@ -3095,11 +3404,24 @@
         starsCanvas.height = window.innerHeight;
       });
 
+      window.addEventListener('popstate', function (event) {
+        if (event.state && event.state.page) {
+          showPage(event.state.page, false);
+          if (event.state.page === 'notes') {
+            if (event.state.courseId) {
+              openCourse(event.state.courseId, false);
+            } else {
+              backToCourses(false);
+            }
+          }
+        } else {
+          showPage('home', false);
+        }
+      });
+
       // INIT
       function init() {
-        var savedTheme = 'dark';
-        try { savedTheme = localStorage.getItem('profPortalTheme') || 'dark'; } catch (e) { }
-        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.setAttribute('data-theme', 'dark');
 
         applyProfileToUI();
         applyPhoto();
@@ -3108,6 +3430,32 @@
 
         initMapUniverse();
         animateMathUniverse();
+
+        // History API Initial Routing
+        var hash = location.hash || '';
+        var initialPage = 'home';
+        var initialCourseId = null;
+
+        if (hash.indexOf('#notes/course/') === 0) {
+          initialPage = 'notes';
+          initialCourseId = hash.replace('#notes/course/', '');
+        } else if (hash.indexOf('#') === 0) {
+          initialPage = hash.substring(1);
+        }
+
+        var validPages = ['home', 'about', 'research', 'notes'];
+        if (validPages.indexOf(initialPage) === -1) {
+          initialPage = 'home';
+        }
+
+        if (initialPage === 'notes' && initialCourseId) {
+          history.replaceState({ page: 'notes', courseId: initialCourseId }, "", hash);
+          showPage('notes', false);
+          openCourse(initialCourseId, false);
+        } else {
+          history.replaceState({ page: initialPage }, "", "#" + initialPage);
+          showPage(initialPage, false);
+        }
       }
     </script>
   </div>
